@@ -1,11 +1,15 @@
 import express from "express";
+import dotenv from "dotenv";
+
+
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT ?? 3000;
 
 app.get("/", (req, res) => {
   try {
-    res.json({ ok: true, message: "Serveur Express + TypeScript minimal" });
+    res.json({ ok: true, message: `Serveur Express + TypeScript minimal`});
   } catch (error) {
     res.json({ error: true, message: "Erreur" });
   }
