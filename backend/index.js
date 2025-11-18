@@ -1,12 +1,15 @@
 import express from "express";
 import dotenv from "dotenv";
+import connection from "./config/bd_cnx.js";
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
+  const [rows] = await connection.execute("SELECT * FROM Artist");
+  console.log(rows);
   res.send({
     test: `Username: adrien Password: 18`,
   });
