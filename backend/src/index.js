@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import connection from "./config/bd_cnx.js";
+import { GetWeeklyTop } from "./controller/music.controller.js";
 
 dotenv.config();
 
@@ -14,6 +15,8 @@ app.get("/", async (req, res) => {
     test: `Username: adrien Password: 18`,
   });
 });
+
+app.post("/GetWeeklyTop", GetWeeklyTop);
 
 app.listen(3000, () => {
   console.log(`Server listening on http://localhost:${3000}`);
