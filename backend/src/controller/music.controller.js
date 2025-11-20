@@ -1,10 +1,10 @@
 import connection from "../config/bd_cnx.js";
 
-export async function GetWeeklyTop(req, res) {
+export async function GetWeeklyTop(req, res) { // Récupère le top de la semaine (attend une date et un pays)
     try {
         const { date, country } = req.body;
         if (!date || !country) {
-            return res.status(400).json({ error: "Missing 'date' or 'country' in request body" });
+            throw new Error('Missing date or country parameter');
         }
 
         const [rows] = await connection.execute(
