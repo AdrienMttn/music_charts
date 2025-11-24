@@ -1,12 +1,26 @@
 import express from "express";
 import dotenv from "dotenv";
+import session from "express-session";
 import connection from "./config/bd_cnx.js";
 import { GetWeeklyTop } from "./controller/music.controller.js";
+import { CreateUser } from "./controller/user.controller.js";
+import { Test } from "./controller/user.controller.js";
+import { Logout } from "./controller/user.controller.js";
+
 
 dotenv.config();
 
 const app = express();
 app.use(express.json());
+app.use(
+  session({
+    secret: "b9f3c2e1-4a7d-4e6a-9d2f-8c3a1f7e2d9c$Xv!rTq#Lz@8wP",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }, // mettre true si HTTPS
+  })
+);
+
 
 app.get("/", async (req, res) => {
   const [rows] = await connection.execute("SELECT * FROM Artist");
@@ -18,6 +32,17 @@ app.get("/", async (req, res) => {
 
 app.post("/GetWeeklyTop", GetWeeklyTop);
 
+
+//
+app.post("/CreateUser", CreateUser);
+app.post("/Test", Test);
+app.post("/Logout", Logout);
+
+
 app.listen(3000, () => {
   console.log(`Server listening on http://localhost:${3000}`);
 });
+
+
+
+
