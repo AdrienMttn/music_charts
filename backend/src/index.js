@@ -1,7 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import connection from "./config/bd_cnx.js";
-import { GetWeeklyTop } from "./controller/music.controller.js";
+import { GetArtist, GetWeeklyTop } from "./controller/music.controller.js";
 
 dotenv.config();
 
@@ -17,7 +17,7 @@ app.get("/", async (req, res) => {
 });
 
 app.post("/GetWeeklyTop", GetWeeklyTop);
-
+app.post("/GetArtist", GetArtist);
 app.listen(3000, () => {
   console.log(`Server listening on http://localhost:${3000}`);
 });
