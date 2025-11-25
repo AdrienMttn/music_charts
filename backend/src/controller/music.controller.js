@@ -33,3 +33,21 @@ export async function GetArtist(req, res){                  // Récupère les in
         console.error('Error in GetArtist:', err);
     }
 }
+export async function GetAudioUrl(req, res){                                                // Récupère les audio features d'un morceau (attend un id youtube)
+    try {
+        const { youtubeId } = req.body;                                                     // Récupère l'id youtube depuis la requête
+        if (!youtubeId) {                                                                   // Vérifie que l'id youtube est présent
+            throw new Error('Missing youtubeId parameter');                                 // Lance une erreur si l'id youtube est manquant
+        }
+        const result = await fetch(
+          `https://adrikiwi.freeboxos.fr/invidious/api/v1/videos/${youtubeId}?local=true`   // Requête à l'API Invidious pour récupérer les infos de la vidéo
+        );
+        const data = await result.json();                                                   // Parse la réponse JSON de l'API
+        console.log(data);                                                                  // Affiche les données récupérées pour le débogage
+        const audioUrl = `https://adrikiwi.freeboxos.fr/invidious/${data.adaptiveFormats[0].url}` // Récupère l'URL de l'audio depuis les formats adaptatifs
+        return res.json({ "Url": audioUrl });                                               // Renvoie l'URL de l'audio au format JSON                    
+    }
+    catch (err) {
+        console.error('Error in GetAudioUrl:', err);
+    } 
+}
