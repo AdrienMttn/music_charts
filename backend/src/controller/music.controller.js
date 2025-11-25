@@ -12,7 +12,11 @@ export async function GetWeeklyTop(req, res) {
       'call GetWeeklyTop (?, ?)',
       [date, country]
     );
-
+    rows[0].map((item) => {
+      console.log(item.title),
+      console.log(item.artistId);
+    });
+    // console.log(rows[0][3]);
     return res.json(rows);
   } catch (err) {
     return res.status(500).json({ error: "Failed to fetch weekly top data" });
