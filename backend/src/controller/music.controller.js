@@ -9,7 +9,7 @@ export async function GetWeeklyTop(req, res) {
     }
 
     const [rows] = await connection.execute(
-      "SELECT * FROM WeeklyTop WHERE weekDate = ? AND countryId = ? ORDER BY `rank`",
+      'call GetWeeklyTop (?, ?)',
       [date, country]
     );
 
@@ -29,7 +29,7 @@ export async function GetArtist(req, res) {
 
     const [rows] = await connection.execute(
       // Exécute la requête SQL pour récupérer les infos de l'artiste
-      "SELECT * FROM Artist WHERE id = ?", // Requête SQL avec un paramètre
+      'call GetArtist (?)', // Appelle la procédure stockée GetArtist avec un paramètre
       [artistId] // Utilise l'id artiste comme paramètre de la requête SQL
     );
     return res.json(rows); // Renvoie les infos de l'artiste au format JSON
