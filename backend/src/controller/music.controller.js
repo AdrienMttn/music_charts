@@ -14,7 +14,7 @@ export async function GetWeeklyTop(req, res) { // Récupère le top de la semain
 
         return res.json(rows);
     } catch (err) {
-        console.error('Error in GetWeeklyTop:', err);
+        return res.status(500).json({ error: 'Failed to fetch weekly top data' });
     }
 }
 export async function GetArtist(req, res){                  // Récupère les infos d'un artiste (attend un id artiste)
@@ -30,7 +30,7 @@ export async function GetArtist(req, res){                  // Récupère les in
         ); 
         return res.json(rows);                              // Renvoie les infos de l'artiste au format JSON
     } catch (err) {
-        console.error('Error in GetArtist:', err);
+        return res.status(500).json({ error: 'Failed to fetch artist data' });
     }
 }
 export async function GetAudioUrl(req, res){                                                // Récupère les audio features d'un morceau (attend un id youtube)
@@ -48,6 +48,6 @@ export async function GetAudioUrl(req, res){                                    
         return res.json({ "Url": audioUrl });                                               // Renvoie l'URL de l'audio au format JSON                    
     }
     catch (err) {
-        console.error('Error in GetAudioUrl:', err);
+        return res.status(500).json({ error: 'Failed to fetch audio URL' });
     } 
 }
