@@ -6,6 +6,7 @@ import { GetWeeklyTop } from "./controller/music.controller.js";
 import { CreateUser } from "./controller/user.controller.js";
 import { Logout } from "./controller/user.controller.js";
 import { Login } from "./controller/user.controller.js";
+import { GetArtist, GetAudioUrl, GetWeeklyTop } from "./controller/music.controller.js";
 
 
 dotenv.config();
@@ -41,6 +42,8 @@ app.post("/Login", Login);
 app.post("/Logout", Logout);
 
 
+app.post("/GetArtist", GetArtist);
+app.post("/GetAudioUrl", GetAudioUrl);
 app.listen(3000, () => {
   console.log(`Server listening on http://localhost:${3000}`);
 });
