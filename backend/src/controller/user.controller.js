@@ -73,7 +73,6 @@ export async function Login(req, res) {
       [mail]
     );
 
-    // rows[0] = tableau des lignes du premier result set
     // rows[0][0] = première ligne (objet utilisateur)
     const userRow = rows[0][0];
 
@@ -100,7 +99,6 @@ export async function Login(req, res) {
       user: req.session.user
     });
   } catch (err) {
-    console.error("Erreur SQL:", err); // log pour debug
     return res.status(500).json({ error: 'Erreur serveur' });
   }
 }
