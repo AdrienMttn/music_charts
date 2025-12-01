@@ -45,9 +45,8 @@ app.listen(3000, () => {
   console.log(`Server listening on http://localhost:${3000}`);
 });
 
-// test login 
 
-app.get("/testlogin", (req, res) => {
+app.get("/testlogin", (req, res) => { // renvoie si l'uttilisateur est connecté
   if (req.session.user) {
     res.send({
       loggedIn: true,
