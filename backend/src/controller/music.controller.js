@@ -12,12 +12,36 @@ export async function GetWeeklyTop(req, res) {
       'call GetWeeklyTop (?, ?)',
       [date, country]
     );
-    rows[0].map((item) => {
-      console.log(item.title),
-      console.log(item.artistId);
-    });
-    // console.log(rows[0][3]);
-    return res.json(rows);
+    const Classement = rows[0].map((item) => ({
+      music : { 
+        id : item.MusicId, 
+        titre : item.TitreMusic, 
+        rang : item.rank , 
+        rangPrecedent : item.previousRank,
+        album : { 
+          id : item.AlbumId, 
+          CoverUrl : item.couvertureAlbum, 
+          RealeaseYear : item.realeaseYear, 
+          titreAlbum : item.TitreAlbum,
+          artist : { 
+            id : item.IdArtist, 
+            name : item.nomArtist, 
+            imageUrl : item.imageArtist, 
+            description : item.description
+          } 
+        },
+    }
+  }
+)
+);
+    const Json = {
+      weeklyTop : {
+        country: country,
+        date: date,
+      },
+      Classement
+    };
+    return res.json(Json);
   } catch (err) {
     return res.status(500).json({ error: "Failed to fetch weekly top data" });
   }
