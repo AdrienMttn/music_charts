@@ -9,11 +9,39 @@ export async function GetWeeklyTop(req, res) {
     }
 
     const [rows] = await connection.execute(
-      "SELECT * FROM WeeklyTop WHERE weekDate = ? AND countryId = ? ORDER BY `rank`",
+      'call GetWeeklyTop (?, ?)',
       [date, country]
     );
-
-    return res.json(rows);
+    const Classement = rows[0].map((item) => ({
+      music : { 
+        id : item.MusicId, 
+        titre : item.TitreMusic, 
+        rang : item.rank , 
+        rangPrecedent : item.previousRank,
+        album : { 
+          id : item.AlbumId, 
+          CoverUrl : item.couvertureAlbum, 
+          RealeaseYear : item.realeaseYear, 
+          titreAlbum : item.TitreAlbum,
+          artist : { 
+            id : item.IdArtist, 
+            name : item.nomArtist, 
+            imageUrl : item.imageArtist, 
+            description : item.description
+          } 
+        },
+    }
+  }
+)
+);
+    const Json = {
+      weeklyTop : {
+        country: country,
+        date: date,
+      },
+      Classement
+    };
+    return res.json(Json);
   } catch (err) {
     return res.status(500).json({ error: "Failed to fetch weekly top data" });
   }
@@ -29,7 +57,7 @@ export async function GetArtist(req, res) {
 
     const [rows] = await connection.execute(
       // Exécute la requête SQL pour récupérer les infos de l'artiste
-      "SELECT * FROM Artist WHERE id = ?", // Requête SQL avec un paramètre
+      'call GetArtist (?)', // Appelle la procédure stockée GetArtist avec un paramètre
       [artistId] // Utilise l'id artiste comme paramètre de la requête SQL
     );
     return res.json(rows); // Renvoie les infos de l'artiste au format JSON
