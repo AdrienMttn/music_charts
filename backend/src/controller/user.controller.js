@@ -111,3 +111,22 @@ export async function Logout(req, res) {
     test: `déconnexion réussie`,
   });
 };
+
+export async function AddFavorite(req, res) {
+  const { musicId } = req.body;
+  if (!musicId) {
+    return res.status(400).json({ error: 'Paramètres manquants' });
+  }
+  if (!req.session.user) {
+    return res.status(401).json({ error: 'Utilisateur non connecté' });
+  }
+  try {
+    await connection.execute(
+      'CALL AddFavorite(?, ?)',
+      [req.session.user.mail, musicId]
+    );
+    return res.json({ message: 'Morceau ajouté aux favoris' });
+  } catch (err) {
+    return res.status(500).json({ error: 'Erreur serveur' });
+  }
+}
