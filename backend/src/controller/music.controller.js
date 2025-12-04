@@ -60,7 +60,39 @@ export async function GetArtist(req, res) {
       'call GetArtist (?)', // Appelle la procédure stockée GetArtist avec un paramètre
       [artistId] // Utilise l'id artiste comme paramètre de la requête SQL
     );
-    return res.json(rows); // Renvoie les infos de l'artiste au format JSON
+    const Music = rows[0].map((item) => ({
+      Music : {
+        id : item.MusicId,
+        titre : item.TitreMusic,
+      }
+    }
+  )
+);
+    const Album = rows[0].map((item) => ({
+        id : item.AlbumId,
+        titreAlbum : item.TitreAlbum,
+        CoverUrl : item.couvertureAlbum,
+        RealeaseYear : item.realeaseYear
+    }
+  )
+);
+    const json = rows[0].map((item) => ({
+      artist : {
+        id : item.IdArtist,
+        name : item.nomArtist,
+        imageUrl : item.imageArtist,
+        description : item.description,
+        Albums : {
+          Album,
+          Musics : {
+            Music
+          }
+        },      
+      }
+    }
+  )
+); 
+    return res.json(json); // Renvoie les infos de l'artiste au format JSON
   } catch (err) {
     return res.status(500).json({ error: "Failed to fetch artist data" });
   }
