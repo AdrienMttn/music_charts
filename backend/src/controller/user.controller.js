@@ -111,3 +111,30 @@ export async function Logout(req, res) {
     test: `déconnexion réussie`,
   });
 };
+
+export async function AddRemoveFavorite(req, res) { // Ajoute ou supprime un favori (attend un id musique)
+  const { musicId } = req.body;
+  if (!musicId) {
+    return res.status(400).json({ error: 'Paramètres manquants' });
+  }
+  if (!req.session.user) {
+    return res.status(401).json({ error: 'Utilisateur non connecté' });
+  }
+  try {
+    const [rows] = await connection.execute(
+      'CALL AddRemoveFavorite(?, ?)', 
+      [req.session.user.mail, musicId],
+    );
+
+    const isAdded = rows[0][0].is_added; // Récupère la valeur de la variable de sortie 
+
+    if (isAdded) { // Si isadded est vrai, le morceau a été ajouté aux favoris
+      return res.json({ message: 'Morceau ajouté aux favoris' });
+    } else { // Sinon, le morceau a été supprimé des favoris
+      return res.json({ message: 'Morceau supprimé des favoris' });
+    }
+    
+  } catch (err) {
+    return res.status(500).json({ error: 'Erreur serveur' });
+  }
+}

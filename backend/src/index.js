@@ -2,12 +2,13 @@ import express from "express";
 import dotenv from "dotenv";
 import session from "express-session";
 import connection from "./config/bd_cnx.js";
-import { CreateUser, Logout, Login } from "./controller/user.controller.js";
+import { CreateUser, Logout, Login, AddRemoveFavorite } from "./controller/user.controller.js";
 import {
   GetArtist,
   GetAudioUrl,
   GetWeeklyTop,
 } from "./controller/music.controller.js";
+
 
 dotenv.config();
 
@@ -38,6 +39,7 @@ app.post("/GetWeeklyTop", GetWeeklyTop);
 app.post("/CreateUser", CreateUser);
 app.post("/Login", Login);
 app.post("/Logout", Logout);
+app.post("/AddRemoveFavorite", AddRemoveFavorite);
 
 app.post("/GetArtist", GetArtist);
 app.post("/GetAudioUrl", GetAudioUrl);
