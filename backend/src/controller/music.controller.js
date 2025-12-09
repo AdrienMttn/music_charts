@@ -60,6 +60,9 @@ export async function GetArtist(req, res) {
       'call GetArtist (?)', // Appelle la procédure stockée GetArtist avec un paramètre
       [artistId] // Utilise l'id artiste comme paramètre de la requête SQL
     );
+    //CRÉER LE TABLEAU DES MUSIQUES
+    // rows[0] contient toutes les lignes retournées par la procédure SQL 
+    // .map() parcourt CHAQUE ligne et transforme les données
     const Music = rows[0].map((item) => ({
       Music : {
         id : item.MusicId,
@@ -68,20 +71,34 @@ export async function GetArtist(req, res) {
     }
   )
 );
-    const Album = rows[0].map((item) => ({
-        id : item.AlbumId,
-        titreAlbum : item.TitreAlbum,
-        CoverUrl : item.couvertureAlbum,
-        RealeaseYear : item.realeaseYear
+    // Résultat : Un tableau avec 4 objets Music, un pour chaque musique
+    //EXTRAIRE LES IDs UNIQUES DES ALBUMS
+    // rows[0].map(item => item.AlbumId) → Crée un tableau avec TOUS les AlbumId [X, X, Y, Y]
+    // new Set(...) → Élimine les doublons et garde seulement les valeurs uniques [X, Y]
+    // [...new Set(...)] → Convertit le Set en tableau normal    
+const albumIds = [...new Set(rows[0].map(item => item.AlbumId))];
+
+//CRÉER LE TABLEAU DES ALBUMS SANS DOUBLONS
+// Pour chaque albumId unique,creation d'un objet album
+const Album = albumIds.map(albumId => {
+      const albumData = rows[0].find(row => row.AlbumId === albumId);
+      return {
+        id : albumData.AlbumId,
+        titreAlbum : albumData.TitreAlbum,
+        CoverUrl : albumData.couvertureAlbum,
+        RealeaseYear : albumData.realeaseYear
+      };
     }
-  )
 );
-    const json = rows[0].map((item) => ({
+//RÉCUPÉRER LES INFOS DE L'ARTISTE
+    const artistInfo = rows[0][0]; // Récupère les infos de l'artiste depuis la première ligne du résultat
+    // Construction de l'objet JSON final
+    const json = {
       artist : {
-        id : item.IdArtist,
-        name : item.nomArtist,
-        imageUrl : item.imageArtist,
-        description : item.description,
+        id : artistInfo.IdArtist,
+        name : artistInfo.nomArtist,
+        imageUrl : artistInfo.imageArtist,
+        description : artistInfo.description,
         Albums : {
           Album,
           Musics : {
@@ -90,8 +107,7 @@ export async function GetArtist(req, res) {
         },      
       }
     }
-  )
-); 
+; 
     return res.json(json); // Renvoie les infos de l'artiste au format JSON
   } catch (err) {
     return res.status(500).json({ error: "Failed to fetch artist data" });
