@@ -121,16 +121,17 @@ export async function AddRemoveFavorite(req, res) { // Ajoute ou supprime un fav
     return res.status(401).json({ error: 'Utilisateur non connecté' });
   }
   try {
-    await connection.execute(
-      'CALL AddRemoveFavorite(?, ?, @is_added)', // Utilise une variable (@is_added) de sortie pour savoir si le morceau a été ajouté ou supprimé
+    const [rows] = await connection.execute(
+      'CALL AddRemoveFavorite(?, ?)', 
       [req.session.user.mail, musicId],
     );
-    const [selectResult] = await connection.execute('SELECT @is_added AS isAdded;'); // Récupère la valeur de la variable de sortie
-    const isAdded = selectResult[0].isAdded; // Récupère si le morceau a été ajouté (1) ou supprimé (0)
-    if (isAdded) {
+
+    const isAdded = rows[0][0].is_added; // Récupère la valeur de la variable de sortie 
+
+    if (isAdded) { // Si isadded est vrai, le morceau a été ajouté aux favoris
       return res.json({ message: 'Morceau ajouté aux favoris' });
-    } else {
-      return res.status(400).json({ message: 'Morceau supprimé des favoris' });
+    } else { // Sinon, le morceau a été supprimé des favoris
+      return res.json({ message: 'Morceau supprimé des favoris' });
     }
     
   } catch (err) {
