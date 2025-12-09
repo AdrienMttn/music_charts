@@ -112,7 +112,7 @@ export async function Logout(req, res) {
   });
 };
 
-export async function AddFavorite(req, res) {
+export async function AddRemoveFavorite(req, res) { // Ajoute ou supprime un favori (attend un id musique)
   const { musicId } = req.body;
   if (!musicId) {
     return res.status(400).json({ error: 'Paramètres manquants' });
@@ -122,10 +122,17 @@ export async function AddFavorite(req, res) {
   }
   try {
     await connection.execute(
-      'CALL AddFavorite(?, ?)',
-      [req.session.user.mail, musicId]
+      'CALL AddRemoveFavorite(?, ?, @is_added)', // Utilise une variable (@is_added) de sortie pour savoir si le morceau a été ajouté ou supprimé
+      [req.session.user.mail, musicId],
     );
-    return res.json({ message: 'Morceau ajouté aux favoris' });
+    const [selectResult] = await connection.execute('SELECT @is_added AS isAdded;'); // Récupère la valeur de la variable de sortie
+    const isAdded = selectResult[0].isAdded; // Récupère si le morceau a été ajouté (1) ou supprimé (0)
+    if (isAdded) {
+      return res.json({ message: 'Morceau ajouté aux favoris' });
+    } else {
+      return res.status(400).json({ message: 'Morceau supprimé des favoris' });
+    }
+    
   } catch (err) {
     return res.status(500).json({ error: 'Erreur serveur' });
   }
