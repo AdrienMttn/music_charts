@@ -1,0 +1,48 @@
+export default class MusicServices {
+    static async GetArtist(artistId : string) {
+        try {
+            const response = await fetch(`/api/GetArtist/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ artistId }),
+            });
+            return await response.json();
+        } catch (error : any) {
+          return error;
+        }
+    }
+    static async GetAudioUrl(youtubeId : string) {
+        try {
+            const response = await fetch(`/api/GetAudioUrl/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }, 
+                body: JSON.stringify({ youtubeId }),
+            });
+            return await response.json();
+        } catch (error : any) {
+          return error;
+        }    
+    }
+    static async GetWeeklyTop(date : string, country : string) {
+        try {   
+            const response = await fetch(`/api/GetWeeklyTop/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ date, country }),
+            });
+            return await response.json();
+        } catch (error : any) {
+          return error;
+        }
+    }
+}
+
+
+
+
