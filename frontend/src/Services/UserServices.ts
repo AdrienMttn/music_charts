@@ -1,26 +1,26 @@
 export default class UserServices {
-    static async CreateUser(mail : string, username : string, password : string) {
+    static async CreateUser(mail : string, password : string, username : string) {
         try {
             const response = await fetch(`/api/CreateUser/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ mail, username, password }),
+                body: JSON.stringify({ mail, password, username }),
             });
             return await response.json();
         } catch (error : any) {
           return error;
         }
     }
-    static async Login(username : string, password : string) {
+    static async Login(mail : string, password : string) {
         try {
             const response = await fetch(`/api/Login/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ username, password }),
+                body: JSON.stringify({ mail, password }),
             });
             return await response.json();
         } catch (error : any) {
