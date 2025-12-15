@@ -30,7 +30,7 @@ export class User{
     getDescription(): string | null {
         return this.description;
     }
-    getNbMusicListen(): number {
+    getNbMusicListen(): number | null {
         return this.nbMusicListen;
     }
     //#endregion
