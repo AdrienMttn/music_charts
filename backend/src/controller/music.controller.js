@@ -63,14 +63,6 @@ export async function GetArtist(req, res) {
     //CRÉER LE TABLEAU DES MUSIQUES
     // rows[0] contient toutes les lignes retournées par la procédure SQL 
     // .map() parcourt CHAQUE ligne et transforme les données
-    const Music = rows[0].map((item) => ({
-      Music : {
-        id : item.MusicId,
-        titre : item.TitreMusic,
-      }
-    }
-  )
-);
     // Résultat : Un tableau avec 4 objets Music, un pour chaque musique
     //EXTRAIRE LES IDs UNIQUES DES ALBUMS
     // rows[0].map(item => item.AlbumId) → Crée un tableau avec TOUS les AlbumId [X, X, Y, Y]
@@ -80,13 +72,18 @@ const albumIds = [...new Set(rows[0].map(item => item.AlbumId))];
 
 //CRÉER LE TABLEAU DES ALBUMS SANS DOUBLONS
 // Pour chaque albumId unique,creation d'un objet album
-const Album = albumIds.map(albumId => {
+const Albums = albumIds.map(albumId => {
       const albumData = rows[0].find(row => row.AlbumId === albumId);
+      const Musics = rows[0].filter(row => row.AlbumId === albumId).map(row => ({
+        id: row.MusicId,
+        titre: row.TitreMusic
+      }));
       return {
         id : albumData.AlbumId,
         titreAlbum : albumData.TitreAlbum,
-        CoverUrl : albumData.couvertureAlbum,
-        RealeaseYear : albumData.realeaseYear
+        CoverUrl : albumData.CouvertureAlbum,
+        RealeaseYear : albumData.realeaseYear,
+        Musics
       };
     }
 );
@@ -99,12 +96,7 @@ const Album = albumIds.map(albumId => {
         name : artistInfo.nomArtist,
         imageUrl : artistInfo.imageArtist,
         description : artistInfo.description,
-        Albums : {
-          Album,
-          Musics : {
-            Music
-          }
-        },      
+          Albums,   
       }
     }
 ; 
