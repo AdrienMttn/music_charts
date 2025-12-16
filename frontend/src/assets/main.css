@@ -1,1 +1,7 @@
 @import "./base.css";
+body {  
+  margin: auto;
+  padding: auto;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #FF109F, #64067C);
+}

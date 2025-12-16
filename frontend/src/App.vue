@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
+import "./assets/main.css";
+import VibzHeader from "./components/VibzHeader.vue";
+import VibzFooter from "./components/VibzFooter.vue";
 </script>
 
 <template>
-  <RouterView />
+  <div id="app">
+    <RouterView />
+  </div>
 </template>
 
-<style scoped></style>
