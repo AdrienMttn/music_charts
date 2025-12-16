@@ -33,6 +33,10 @@ export class Artist {
     getDescription(): string | null {
         return this.description;
     }
+
+    getAlbums(): Album[] {
+        return this.albums;
+    }
     //#endregion
 
     addAlbum(unAlbum :Album){

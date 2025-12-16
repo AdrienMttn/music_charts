@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Album } from '@/models/album.ts';
+import { Album } from '@/models/album';
 const props = defineProps<{unAlbum: Album}>();
 </script>
 

@@ -4,6 +4,7 @@ import { ref, type Ref } from 'vue'
 import { Artist } from '@/models/artist'
 import MusicServices from '@/Services/MusicServices'
 import { Album } from '@/models/album'
+import AlbumComponent from '@/components/ArtistComponents/AlbumComponents.vue'
 
 const route = useRoute()
 // On accède à la variable définie dans le path du router
@@ -15,14 +16,10 @@ async function InitArtist()
 {
     if(route.params.id){
         const res = await MusicServices.GetArtist(route.params.id);
-        artist.value = new Artist(res.artist.id, res.artist.name, res.artist.imageUrl, res.artist.description)
-        // console.log(artist.value)
-        // console.log(res);
-
-
-        // res.artist.Albums.forEach((Album :Album) => {
-        //     artist.value?.addAlbum(new Album(Album.id,))
-        // });
+        artist.value = new Artist(res.artist.id, res.artist.name, res.artist.imageUrl, res.artist.description );
+        res.artist.Albums.forEach((unAlbum :any) => {
+            artist.value?.addAlbum(new Album(unAlbum.id, unAlbum.titreAlbum, unAlbum.CoverUrl, unAlbum.RealeaseYear,res.artist.id ));
+        });
 
     }
     
@@ -46,8 +43,10 @@ InitArtist()
       <div class="bg-linear-to-t from-[#DF89D7B2] to-[#794B754D] p-8 rounded-3xl h-fit">
     <h1 class="text-3xl font-bold text-center mb-4 ">Albums</h1>
     
-    <div class="w-4/5 mx-auto p-6 h-fit">
-        <!-- <AlbumComponent :unAlbum="album"/> -->
+    <div class="w-4/5 mx-auto p-6 h-fit ">
+      <div v-for="album in artist?.getAlbums()" :key="album.getId()" class="mb-6">
+        <AlbumComponent :unAlbum="album"/>
+      </div>
     </div>
   </div>
     </div>
