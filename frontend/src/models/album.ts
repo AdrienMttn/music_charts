@@ -1,9 +1,11 @@
+import { Music } from "./music";
 export class Album {
     private id: string;
     private title: string
     private coverUrl: string;
     private releaseYear: number | null;
     private artistId: string;
+    private musics: Music[];
 
     constructor(id: string, title: string, coverUrl: string, releaseYear: number | null, artistId: string) {
         this.id = id;
@@ -11,6 +13,7 @@ export class Album {
         this.coverUrl = coverUrl;
         this.releaseYear = releaseYear;
         this.artistId = artistId;
+        this.musics = [];
     }
 
     //#region Getters
@@ -34,5 +37,14 @@ export class Album {
         return this.artistId;
     }
 
+    getMusics(): Music[] {
+        return this.musics;
+    }
+
     //#endregion
+
+    addMusic(unemusic :Music){
+        this.musics.push(unemusic);
+    }
+    
 }

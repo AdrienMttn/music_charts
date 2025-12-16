@@ -1,5 +1,5 @@
 export default class MusicServices {
-    static async GetArtist(artistId : string) {
+    static async GetArtist(artistId : any) {
         try {
             const response = await fetch(`/api/GetArtist/`, {
                 method: 'POST',

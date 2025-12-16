@@ -1,15 +1,19 @@
+import type { Album } from "./album";
+
 export class Artist {
     private id: string;
     private name: string;
     private imageUrl: string;
     private description: string | null;
+    private albums:Album[];
 
 
-    constructor(id: string, name: string, imageUrl: string, description: string | null) {
+    constructor(id: string, name: string, imageUrl: string, description: string | null ) {
         this.id = id;
         this.name = name;
         this.imageUrl = imageUrl;
         this.description = description;
+        this.albums = [];
     }
 
 
@@ -30,6 +34,10 @@ export class Artist {
         return this.description;
     }
     //#endregion
+
+    addAlbum(unAlbum :Album){
+        this.albums.push(unAlbum);
+    }
 
 
 
