@@ -20,13 +20,13 @@ export async function GetWeeklyTop(req, res) {
         rangPrecedent : item.previousRank,
         album : { 
           id : item.AlbumId, 
-          CoverUrl : item.couvertureAlbum, 
+          CoverUrl : item.CouvertureAlbum, 
           RealeaseYear : item.realeaseYear, 
           titreAlbum : item.TitreAlbum,
           artist : { 
             id : item.IdArtist, 
             name : item.nomArtist, 
-            imageUrl : item.imageArtist, 
+            imageUrl : item.ImageArtist, 
             description : item.description
           } 
         },
@@ -94,7 +94,7 @@ const Albums = albumIds.map(albumId => {
       artist : {
         id : artistInfo.IdArtist,
         name : artistInfo.nomArtist,
-        imageUrl : artistInfo.imageArtist,
+        imageUrl : artistInfo.ImageArtist,
         description : artistInfo.description,
           Albums,   
       }
