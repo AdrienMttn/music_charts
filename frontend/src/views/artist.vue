@@ -7,8 +7,11 @@ import { Album } from '@/models/album'
 import AlbumComponent from '@/components/ArtistComponents/AlbumComponents.vue'
 import { useScreen, useGrid } from 'vue-screen'
 
-const screen = useScreen() 
-console.log(screen.height + " " + screen.width)
+
+// Pour Responsive ...
+// const screen = useScreen() 
+// console.log(screen.height + " " + screen.width)
+// -------------------------------- //
 
 const route = useRoute()
 // On accède à la variable définie dans le path du router
