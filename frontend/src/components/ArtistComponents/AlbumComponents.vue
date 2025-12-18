@@ -9,7 +9,7 @@ const props = defineProps<{unAlbum: Album}>();
       :src="unAlbum?.getCoverUrl()" 
       class="w-24 h-24 rounded-lg object-cover"
     />
-    <p class="text-lg font-semibold">{{ unAlbum?.getTitle() }}</p>
-    <p class="text-lg font-semibold">{{ unAlbum?.getReleaseYear() }}</p>
+    <p class="text-lg font-semibold ">{{ unAlbum?.getTitle() }}</p>
+    <p class="text-lg font-semibold  ">{{ unAlbum?.getReleaseYear() }}</p>
   </div>
 </template>

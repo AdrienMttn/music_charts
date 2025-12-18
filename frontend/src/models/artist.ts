@@ -4,15 +4,15 @@ export class Artist {
     private id: string;
     private name: string;
     private imageUrl: string;
-    private description: string | null;
+    private description: string | undefined;
     private albums:Album[];
 
 
-    constructor(id: string, name: string, imageUrl: string, description: string | null ) {
+    constructor(id: string, name: string, imageUrl: string, description: string | undefined ) {
         this.id = id;
         this.name = name;
         this.imageUrl = imageUrl;
-        this.description = description;
+        this.description = description === "null"? undefined : description;
         this.albums = [];
     }
 
@@ -30,7 +30,7 @@ export class Artist {
         return this.imageUrl;
     }
 
-    getDescription(): string | null {
+    getDescription(): string | undefined {
         return this.description;
     }
 
