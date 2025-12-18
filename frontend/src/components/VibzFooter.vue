@@ -1,6 +1,6 @@
 <template>
   <footer class="vibz-footer">
-    <p>&copy; </p>
+    <p> </p>
   </footer>
 </template>
 

@@ -1,57 +1,78 @@
 <template>
-  <!-- Conteneur principal du header -->
   <header class="vibz-header">
-
-    <!-- Nom / logo du site -->
     <h1 class="vibz-nom">VIBZ</h1>
 
-    <!-- Navigation contenant les trois boutons -->
     <nav class="vibz-nav">
-      <button>☆ Favoris</button>   <!-- Bouton Favoris -->
-      <button>Profil</button>      <!-- Bouton Profil -->
-      <button>Artiste</button>     <!-- Bouton Artiste -->
+      <button>☆ Favoris</button>
+      <button>Profil</button>
+      <button>Artiste</button>
     </nav>
-
   </header>
 </template>
 
 <style scoped>
-/* Style général du header */
 .vibz-header {
-  display: flex;                     /* Met le logo et la nav sur la même ligne */
-  justify-content: space-between;    /* Logo à gauche, boutons à droite */
-  align-items:  center;              /* Centre verticalement les éléments */
-  padding: 20px 10px;                /* Espacement interne */
-  color: white;                      /* Couleur du texte */
+  display: flex;             /* Active Flexbox pour aligner Logo et Nav sur une ligne */
+  justify-content: space-between; /* Pousse le logo à gauche et la nav à droite */
+  align-items: center;       /* Centre verticalement les éléments (logo/boutons) */
+  padding: 20px 5%;          /* 20px de haut/bas, et 5% de marge dynamique sur les côtés */
+  color: white;              /* Couleur du texte par défaut */
+  width: 100%;               /* Prend toute la largeur disponible */
+  box-sizing: border-box;    /* Inclut le padding dans le calcul de la largeur (évite le débordement) */
 }
 
-/* Style du texte "VIBZ" */
 .vibz-nom {
-  font-size: 1.1rem;                 /* Taille du texte */
-  font-weight: 900;                  /* Texte très épais */
-  letter-spacing: 3px;               /* Espacement entre les lettres */
-  text-transform: uppercase;         /* Met en majuscules */
+  font-size: 1.1rem;         /* Taille du texte du logo */
+  font-weight: 900;          /* Épaisseur maximale (style gras) */
+  letter-spacing: 3px;       /* Écarte légèrement les lettres pour un look moderne */
+  text-transform: uppercase; /* Force le texte en majuscules */
 }
 
-/* Conteneur des boutons */
 .vibz-nav {
-  display: flex;                     /* Aligne les boutons horizontalement */
-  gap: 250px;                        /* Grand espace entre chaque bouton */
+  display: flex;             /* Aligne les boutons les uns à côté des autres */
+  /* GAP DYNAMIQUE : min 15px, idéal 15% de l'écran, max 250px */
+  gap: clamp(15px, 15vw, 250px); 
 }
 
-/* Style des boutons */
 .vibz-nav button {
-  background: none;                  /* Pas de fond */
-  border: none;                      /* Pas de bordure */
-  color: white;                      /* Texte blanc */
-  font-size: 1.1rem;                 /* Taille du texte */
-  font-weight: 600;                  /* Texte semi-gras */
-  cursor: pointer;                   /* Curseur "main" */
-  transition: 0.3s;                  /* Animation douce */
+  background: none;          /* Supprime le fond gris par défaut du bouton */
+  border: none;              /* Supprime le contour par défaut */
+  color: white;              /* Texte en blanc */
+  font-size: 1rem;           /* Taille lisible pour les boutons */
+  font-weight: 600;          /* Épaisseur semi-grasse */
+  cursor: pointer;           /* Affiche la main au survol */
+  transition: 0.3s;          /* Fluidité de 0.3 seconde pour l'animation de couleur */
+  white-space: nowrap;       /* Empêche le texte de revenir à la ligne si l'espace est petit */
 }
 
-/* Effet au survol */
-.vibz-nav button:hover {             /* Change la couleur au hover */
-  color: #FFD6F0;
+/* Changement de couleur quand la souris passe sur un bouton */
+.vibz-nav button:hover {
+  color: #FFD6F0;            /* Rose très clair */
+}
+
+/* --- RESPONSIVE : TABLETTES (Moins de 1024px de large) --- */
+@media (max-width: 1024px) {
+  .vibz-nav {
+    gap: 50px;               /* On réduit l'espace fixe à 50px pour que tout tienne */
+  }
+}
+
+/* --- RESPONSIVE : MOBILES (Moins de 600px de large) --- */
+@media (max-width: 600px) {
+  .vibz-header {
+    flex-direction: column;  /* On empile : le Logo en haut, les boutons en dessous */
+    gap: 15px;               /* Espace entre le logo et le bloc de navigation */
+    padding: 15px;           /* Réduction de la marge pour gagner de la place */
+  }
+
+  .vibz-nav {
+    gap: 20px;               /* Espace serré entre les boutons sur téléphone */
+    width: 100%;             /* La nav prend toute la largeur */
+    justify-content: center; /* Centre les 3 boutons horizontalement */
+  }
+
+  .vibz-nav button {
+    font-size: 0.9rem;       /* Texte légèrement plus petit pour mobile */
+  }
 }
 </style>
