@@ -1,11 +1,14 @@
-import { createRouter, createWebHistory } from "vue-router";
-import Test from "../views/test.vue";
+import { createRouter, createWebHistory } from 'vue-router'
+import artist from '@/views/artist.vue'
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    {path: '/test', component: Test}
+    {
+      path: '/artist/:id',
+      component: artist
+    }
   ],
-});
+})
 
 export default router;
