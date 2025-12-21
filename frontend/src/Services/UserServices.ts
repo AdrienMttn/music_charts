@@ -55,4 +55,21 @@ export default class UserServices {
           return error;
         }
     }
+    static async TestLogin() {
+    try {
+        const response = await fetch(`/api/testlogin`, {
+            method: 'GET', 
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        
+        
+        return await response.json();
+    }
+    catch (error: any) {
+        console.error("Erreur lors de la vérification de session:", error);
+        return { loggedIn: false, error: error.message };
+    }
+}
 }
