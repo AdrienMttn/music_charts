@@ -72,7 +72,6 @@ export async function Login(req, res) {
       'CALL LoginUser(?)',
       [mail]
     );
-
     // rows[0][0] = première ligne (objet utilisateur)
     const userRow = rows[0][0];
 
