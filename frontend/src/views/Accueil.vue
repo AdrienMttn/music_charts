@@ -122,8 +122,9 @@ import VibzFooter from "@/components/VibzFooter.vue";
 .vibz-sous-title-section {
   display: flex;
   justify-content: left;
-  margin-top: 40px;
+  margin-top: 30px;
   max-width: 60%;
+  margin-left: 10%;
 }
 
 .vibz-sous-title {
@@ -145,19 +146,20 @@ import VibzFooter from "@/components/VibzFooter.vue";
 
 .vibz-hero {
   position: absolute; /* Elle flotte */
-  top: 150px;         /* Hauteur par rapport au haut */
-  right: 5%;          /* Décalage depuis la droite */
-  width: 300px;       /* Largeur fixe */
-  padding: 0;         /* Pas de padding */
+  top: 80px;         /* Hauteur par rapport au haut */
+  right: 12%;          /* Décalage depuis la droite */
+  width: 330px;       /* Largeur fixe */
+  z-index: 5;        /* Au-dessus des autres éléments */
+  padding: 0;
+  
 }
 
 .vibz-image-biais {
-  width: 100%;
-  max-width: 350px; /* Taille max sur desktop */
+  width: 130%;
+  max-width: 500px; /* Taille max sur desktop */
   height: auto;
   transform: rotate(-10deg);
   border-radius: 12px;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
 }
 
 /* ZONE DES BOUTONS */
@@ -167,6 +169,7 @@ import VibzFooter from "@/components/VibzFooter.vue";
   gap: 100px;
   margin-top: 20px;
   width: 100%;
+  padding-left: 5%;
 }
 
 .btn-vibz {
