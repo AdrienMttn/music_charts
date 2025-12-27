@@ -44,14 +44,61 @@ import VibzFooter from "@/components/VibzFooter.vue";
       </div>
     </div>
     
+    
     <div class="vibz-hits-grid">
     <div v-for="n in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" :key="n" :class="['hit-card', `pos-${n}`]">
       <div class="album-cover"></div>
       <p class="hit-number">TOP {{ n }}</p>
     </div>
+    </div>
+
+
+    <div class="vibz-table-container">
+      <p class="table-intro">
+        Envie de découvrir plus de hits ? <br/> 
+        <strong>Voici d'autres musiques qui pourrait te plaire !</strong>
+      </p>
+
+      <div class="vibz-table-wrapper">
+        <table class="hits-table">
+          <thead>
+            <tr>
+              <th>Rang</th>
+              <th>Image</th>
+              <th>Titre</th>
+              <th>Artiste</th>
+              <th>Album</th>
+              <th>Date de sortie</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="i in 10" :key="i">
+              <td>{{ i + 10  }}
+                <span v-if="i % 2 === 0" class="trend-up">▲</span>
+                <span v-else class="trend-down">▼</span>
+              </td>
+
+
+              <td>
+                <div class="table-album-cover"></div>
+              </td>
+
+              <td>Titre {{ i + 10 }}</td>
+
+              <td>Artiste {{ i + 10 }}</td>
+
+              <td>Album {{ i + 10 }}</td>
+
+              <td>2025-01-{{ i + 10 }}</td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      </div>
+      
   </div>
-    <VibzFooter />
-  </div>
+  
 </template>
 
 
@@ -61,6 +108,7 @@ import VibzFooter from "@/components/VibzFooter.vue";
 
 /* STRUCTURE DE BASE */
 .vibz-container {
+  position: relative;
   overflow-x: hidden; /* Évite le scroll horizontal dû à la rotation de l'image */
   width: 100%;
 }
@@ -75,6 +123,7 @@ import VibzFooter from "@/components/VibzFooter.vue";
   display: flex;
   justify-content: left;
   margin-top: 40px;
+  max-width: 60%;
 }
 
 .vibz-sous-title {
@@ -95,9 +144,11 @@ import VibzFooter from "@/components/VibzFooter.vue";
 }
 
 .vibz-hero {
-  display: flex;
-  justify-content: center;
-  padding: 40px 20px;
+  position: absolute; /* Elle flotte */
+  top: 150px;         /* Hauteur par rapport au haut */
+  right: 5%;          /* Décalage depuis la droite */
+  width: 300px;       /* Largeur fixe */
+  padding: 0;         /* Pas de padding */
 }
 
 .vibz-image-biais {
@@ -108,9 +159,6 @@ import VibzFooter from "@/components/VibzFooter.vue";
   border-radius: 12px;
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
 }
-
-
-
 
 /* ZONE DES BOUTONS */
 .vibz-buttons {
@@ -211,62 +259,170 @@ import VibzFooter from "@/components/VibzFooter.vue";
   text-transform: uppercase;
 }
 
+/* --- STYLE DU TABLEAU AVEC TENDANCES --- */
+
+.vibz-table-container {
+  max-width: 1100px;
+  margin: 80px auto;
+  padding: 0 5%;
+}
+
+.table-intro {
+  color: #ffffff !important;
+  margin-bottom: 25px;
+  font-size: 1.4rem;
+}
+
+.vibz-table-wrapper {
+  overflow-x: auto;
+}
+
+.hits-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+  min-width: 800px;
+}
+
+.hits-table th, 
+.hits-table td {
+  color: #ffffff ;
+  text-align: left;
+  padding: 12px 20px;
+}
+
+.hits-table th {
+  color: #ffffff ;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.hits-table td {
+  background: rgba(255, 255, 255, 0.05);
+  vertical-align: middle;
+}
+
+/* Arrondis des lignes */
+.hits-table td:first-child { border-radius: 12px 0 0 12px; font-weight: 900; }
+.hits-table td:last-child { border-radius: 0 12px 12px 0; }
+
+.table-album-cover {
+  width: 50px;
+  height: 50px;
+  background-color: #333;
+  border-radius: 6px;
+}
+
+/* --- STYLES DES FLÈCHES --- */
+.trend-up {
+  color: #00ff88 !important; /* Vert fluo */
+  margin-left: 8px;
+  font-weight: bold;
+}
+
+.trend-down {
+  color: #ff3333 !important; /* Rouge vif */
+  margin-left: 8px;
+  font-weight: bold;
+}
+
+.trend-stable {
+  color: #888 !important;
+  margin-left: 8px;
+}
 
 /* --- RESPONSIVE --- */
 
 /* Tablettes et Mobiles (Large) */
 @media (max-width: 768px) {
-  .vibz-title-section {
-    margin-top: 30px;
-  }
-  .vibz-top10 {
-    flex-direction: column;
-    gap: 20px;
-    text-align: center;;
-  }
   
-  .vibz-image-biais {
-    max-width: 280px; /* On réduit l'image sur tablette */
-    transform: rotate(-5deg); /* On réduit un peu l'angle pour gagner de la place */
+  .vibz-hero {
+    position: relative; 
+    top: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    margin-top: 10px;
   }
+
+  /* On recentre le texte et les boutons */
+  .vibz-sous-title-section {
+    max-width: 100%;
+    justify-content: center;
+    padding: 0 5%;
+    margin-top: 20px;
+  }
+
+  .vibz-sous-title {
+    text-align: center;
+  }
+
   .vibz-buttons {
-    flex-direction: column; /* Empile les boutons sur mobile */
+    justify-content: center;
+    padding-left: 0;
+    flex-direction: column; /* Boutons l'un sur l'autre */
     align-items: center;
     gap: 15px;
   }
+
+  .vibz-title-section {
+    margin-top: 30px;
+  }
+
+  .vibz-top10 {
+    flex-direction: column;
+    gap: 20px;
+    text-align: center;
+  }
+  
+  .vibz-image-biais {
+    max-width: 280px; 
+    transform: rotate(-5deg); 
+  }
   
   .btn-styled {
-    width: 85%; /* Plus large sur téléphone pour cliquer facilement */
+    width: 85%; 
   }
-}
 
-.vibz-hits-grid {
-  grid-template-columns: repeat(2, 1fr); /* 2 colonnes sur tablette */
-  grid-template-rows: auto;
-  gap: 20px;
-}
+  .vibz-table-container {
+    margin: 40px auto;
+  }
 
-.hit-number {
+  .table-intro {
+    text-align: center;
+    font-size: 1.2rem;
+  }
+
+  .vibz-hits-grid {
+    grid-template-columns: repeat(2, 1fr); 
+    grid-template-rows: auto;
+    gap: 20px;
+  }
+
+  .hit-number {
     font-size: 0.9rem;
   }
+}
 
 /* Petits Mobiles */
 @media (max-width: 500px) {
   .vibz-title {
-    letter-spacing: 3px; /* On réduit l'espacement pour éviter les coupures */
+    letter-spacing: 3px; 
   }
 
   .vibz-image-biais {
-    max-width: 220px; /* Image plus petite sur téléphone */
+    max-width: 220px; 
   }
   
   .vibz-hero {
-    padding: 20px;
+    padding: 10px;
   }
+
   .vibz-sous-title {
-    text-align: center; /* Souvent plus joli de centrer le texte sur mobile */
+    text-align: center; 
     letter-spacing: 2px;
   }
 }
-</style>
 
+</style>
