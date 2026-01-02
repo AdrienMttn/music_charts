@@ -4,6 +4,8 @@ import { useRouter } from "vue-router";
 import UserServices from '@/Services/UserServices';
 
 const router = useRouter();
+const emailErrorMessage = ref("Le champ ne doit pas être vide");
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // 1. Un objet réactif pour les données du formulaire
 const form = reactive({
@@ -28,14 +30,21 @@ function resetErrors() {
   errors.confirmPassword = false;
 }
 
-const emailErrorMessage = ref("Le champ ne doit pas être vide");
+
 async function VerifLogin() {
   // Réinitialisation des erreurs
   resetErrors();
   emailErrorMessage.value = "Le champ ne doit pas être vide"; // Reset du message par défaut
 
   // Validations
+  
+  
   if (!form.email) errors.email = true;
+  else if (!emailRegex.test(form.email))
+  {
+    errors.email = true;
+    emailErrorMessage.value = "Veuillez rentrez un email valide";
+  }
   if (!form.username) errors.username = true;
   const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{6,}$/;
   if (!regex.test(form.password)) errors.password = true;
