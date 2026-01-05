@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from "vue-router";
 import UserServices from '@/Services/UserServices';
 
@@ -8,7 +8,7 @@ const emailErrorMessage = ref("Le champ ne doit pas être vide");
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // 1. Un objet réactif pour les données du formulaire
-const form = reactive({
+const form = ref({
   email: '',
   username: '',
   password: '',
@@ -16,7 +16,7 @@ const form = reactive({
 });
 
 // 2. Un objet pour gérer l'état des erreurs
-const errors = reactive({
+const errors = ref({
   email: false,
   username: false,
   password: false,
@@ -24,10 +24,10 @@ const errors = reactive({
 });
 
 function resetErrors() {
-  errors.email = false;
-  errors.username = false;
-  errors.password = false;
-  errors.confirmPassword = false;
+  errors.value.email = false;
+  errors.value.username = false;
+  errors.value.password = false;
+  errors.value.confirmPassword = false;
 }
 
 
@@ -39,24 +39,25 @@ async function VerifLogin() {
   // Validations
   
   
-  if (!form.email) errors.email = true;
-  else if (!emailRegex.test(form.email))
+  if (!form.value.email) errors.value.email = true;
+  else if (!emailRegex.test(form.value.email))
   {
-    errors.email = true;
+    errors.value.email = true;
     emailErrorMessage.value = "Veuillez rentrez un email valide";
+    return;
   }
-  if (!form.username) errors.username = true;
+  if (!form.value.username) errors.value.username = true;
   const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{6,}$/;
-  if (!regex.test(form.password)) errors.password = true;
-  if (form.confirmPassword !== form.password) errors.confirmPassword = true;
+  if (!regex.test(form.value.password)) errors.value.password = true;
+  if (form.value.confirmPassword !== form.value.password) errors.value.confirmPassword = true;
 
   try {
-    const res = await UserServices.CreateUser(form.email, form.password, form.username);
+    const res = await UserServices.CreateUser(form.value.email, form.value.password, form.value.username);
     if (res.user) {
       router.push('/'); // Redirection après succès
     }
     if(res.message == 'Un compte est déjà associé à ce mail'){
-      errors.email = true;
+      errors.value.email = true;
       emailErrorMessage.value = "Un compte est déjà associé à ce mail";
     }
     
