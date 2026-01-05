@@ -1,21 +1,26 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from "vue-router";
 import UserServices from '@/Services/UserServices';
 const router = useRouter();
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+
+
 // 1. Un objet réactif pour les données du formulaire
-const form = reactive({
+const form = ref({
   email: '',
   password: '',
 });
 // 2. Un objet pour gérer l'état des erreurs
-const errors = reactive({
+const errors = ref({
   email: false,
   password: false,
 });
 function resetErrors() {
-  errors.email = false;
-  errors.password = false;
+  errors.value.email = false;
+  errors.value.password = false;
   emailError.value = 'Le champ ne doit pas être vide';
   passwordError.value = 'Le champ ne doit pas être vide';
 }
@@ -26,19 +31,25 @@ const passwordError = ref('Le champ ne doit pas être vide');
 async function VerifLogin() {
     resetErrors();
 
-    if (!form.email) {
-        errors.email = true;
+    if (!form.value.email) {
+        errors.value.email = true;
     }
-    if (!form.password) {
-        errors.password = true;
+    if (!form.value.password) {
+        errors.value.password = true;
     }
-    if (errors.email || errors.password) {
+    if (errors.value.email || errors.value.password) {
         return; 
+    }
+    if(!emailRegex.test(form.value.email))
+    {
+      errors.value.email = true;
+      emailError.value = "Veuillez rentrez un email valide";
+      return;
     }
 
     
 
-    const res = await UserServices.Login(form.email, form.password);
+    const res = await UserServices.Login(form.value.email, form.value.password);
 
     if (res.message == "Connexion réussie") {
         // Rediriger vers la page précédente
@@ -46,8 +57,8 @@ async function VerifLogin() {
     } else {
         // Gérer les erreurs de validation
         if (res.message == "Identifiants invalides") {
-            errors.email = true;
-            errors.password = true;
+            errors.value.email = true;
+            errors.value.password = true;
             emailError.value = "Email ou mot de passe incorrect";
             passwordError.value = "Email ou mot de passe incorrect";
         }
