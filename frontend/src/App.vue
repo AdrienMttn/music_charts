@@ -7,7 +7,10 @@ import VibzFooter from "./components/VibzFooter.vue";
 
 <template>
   <div id="app">
+    <VibzHeader />
+    
     <RouterView />
+    <VibzFooter />
   </div>
 </template>
 

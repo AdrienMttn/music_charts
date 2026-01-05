@@ -5,7 +5,7 @@
     </div>
 
     <nav class="vibz-nav">
-      <button>☆ Favoris</button>
+      <button>Favoris</button>
       <button>Profil</button>
       <button>Artiste</button>
     </nav>
@@ -28,7 +28,7 @@
   background: none;          /* Supprime le fond gris par défaut */
   border: none;              /* Supprime le contour */
   color: white;              /* Texte en blanc */
-  font-size: 1rem;           /* Taille du texte du logo */
+  font-size: 1.8rem;           /* Taille du texte du logo */
   font-weight: 700;          /* Même épaisseur que les autres */
   letter-spacing: 3px;       /* Écarte légèrement les lettres */
   cursor: pointer;           /* La main au survol */
@@ -43,14 +43,14 @@
 .vibz-nav {
   display: flex;             /* Aligne les boutons les uns à côté des autres */
   /* GAP DYNAMIQUE : min 15px, idéal 15% de l'écran, max 250px */
-  gap: clamp(15px, 15vw, 250px); 
+  gap: clamp(20px, 10vw, 150px); 
 }
 
 .vibz-nav button {
   background: none;          /* Supprime le fond gris par défaut du bouton */
   border: none;              /* Supprime le contour par défaut */
   color: white;              /* Texte en blanc */
-  font-size: 1rem;           /* Taille lisible pour les boutons */
+  font-size: 1.8rem;           /* Taille lisible pour les boutons */
   font-weight: 600;          /* Épaisseur semi-grasse */
   cursor: pointer;           /* Affiche la main au survol */
   transition: 0.3s;          /* Fluidité de 0.3 seconde pour l'animation de couleur */
