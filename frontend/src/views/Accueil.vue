@@ -25,34 +25,6 @@ import VibzFooter from "@/components/VibzFooter.vue";
     </div>
 
 
-    <div class="vibz-hits-section">
-      <!-- Contenu des hits à ajouter ici -->
-       <div class="vibz-top10">
-        <h2 class="main-title">TOP 10 DES HITS DU MOIS </h2>
-
-        <div class="date-badge">
-          
-          <input
-              type="datetime-local"
-              id="meeting-time"
-              name="meeting-time"
-              value="meeting-time"
-              min="styled-date"
-              max="2025-12-24T16:00" 
-            />
-        </div>
-      </div>
-    </div>
-    
-    
-    <div class="vibz-hits-grid">
-    <div v-for="n in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]" :key="n" :class="['hit-card', `pos-${n}`]">
-      <div class="album-cover"></div>
-      <p class="hit-number">TOP {{ n }}</p>
-    </div>
-    </div>
-
-
     <div class="vibz-table-container">
       <p class="table-intro">
         Envie de découvrir plus de hits ? <br/> 
@@ -72,10 +44,10 @@ import VibzFooter from "@/components/VibzFooter.vue";
             </tr>
           </thead>
           <tbody>
-            <tr v-for="i in 10" :key="i">
-              <td>{{ i + 10  }}
-                <span v-if="i % 2 === 0" class="trend-up">▲</span>
-                <span v-else class="trend-down">▼</span>
+            <tr v-for="i in 20" :key="i">
+              <td>
+                  {{ i }} <span v-if="i % 2 === 0" class="trend-up">▲</span>
+                  <span v-else class="trend-down">▼</span>
               </td>
 
 
@@ -83,13 +55,13 @@ import VibzFooter from "@/components/VibzFooter.vue";
                 <div class="table-album-cover"></div>
               </td>
 
-              <td>Titre {{ i + 10 }}</td>
+              <td>Titre {{ i + 20 }}</td>
 
-              <td>Artiste {{ i + 10 }}</td>
+              <td>Artiste {{ i + 20 }}</td>
 
-              <td>Album {{ i + 10 }}</td>
+              <td>Album {{ i + 20 }}</td>
 
-              <td>2025-01-{{ i + 10 }}</td>
+              <td>2025-01-{{ i + 20}}</td>
 
             </tr>
           </tbody>
@@ -98,7 +70,7 @@ import VibzFooter from "@/components/VibzFooter.vue";
       </div>
       
   </div>
-  
+  <VibzFooter />
 </template>
 
 
@@ -215,52 +187,6 @@ import VibzFooter from "@/components/VibzFooter.vue";
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
 
-.vibz-top10 {
-  margin-top: 50px;
-  text-align: center;
-}
-
-.main-title {
-  font-size: clamp(1.5rem, 4vw, 2.5rem); 
-  letter-spacing: clamp(2px, 1vw, 6px);
-  text-align: center;
-  font-weight: 600;
-  margin-bottom: 20px;
-}
-
-.vibz-hits-grid {
-  display: grid;
-  grid-template-columns: repeat(5,1fr);/* 5 colonnes pour répartir les 10 albums */
-  grid-template-rows: repeat(3,auto);
-  gap: 30px;
-  padding: 40px;
-  max-width: 1000px;
-  margin: 0 auto; /* Centre la grille */
-}
-
-.hit-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.album-cover {
-  width: 110px;
-  height: 110px;
-  background-color: #D9D9D9;
-  border-radius: 5px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-}
-
-.hit-number {
-  color: white;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 900;
-  font-style: italic;
-  font-size: 0.8rem;
-  margin-top: 10px;
-  text-transform: uppercase;
-}
 
 /* --- STYLE DU TABLEAU AVEC TENDANCES --- */
 

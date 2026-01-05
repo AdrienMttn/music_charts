@@ -1,6 +1,8 @@
 <template>
   <header class="vibz-header">
-    <h1 class="vibz-nom">VIBZ</h1>
+    <div class="vibz-logo">
+      <button class="vibz-nom">Vibz</button>
+    </div>
 
     <nav class="vibz-nav">
       <button>☆ Favoris</button>
@@ -22,10 +24,20 @@
 }
 
 .vibz-nom {
-  font-size: 1.1rem;         /* Taille du texte du logo */
-  font-weight: 900;          /* Épaisseur maximale (style gras) */
   letter-spacing: 3px;       /* Écarte légèrement les lettres pour un look moderne */
-  text-transform: uppercase; /* Force le texte en majuscules */
+  background: none;          /* Supprime le fond gris par défaut */
+  border: none;              /* Supprime le contour */
+  color: white;              /* Texte en blanc */
+  font-size: 1rem;           /* Taille du texte du logo */
+  font-weight: 700;          /* Même épaisseur que les autres */
+  letter-spacing: 3px;       /* Écarte légèrement les lettres */
+  cursor: pointer;           /* La main au survol */
+  transition: 0.3s;
+}
+
+.vibz-logo button {
+  padding: 0;
+  font-family: inherit;      /* Garde la même police que le reste */
 }
 
 .vibz-nav {
@@ -44,6 +56,8 @@
   transition: 0.3s;          /* Fluidité de 0.3 seconde pour l'animation de couleur */
   white-space: nowrap;       /* Empêche le texte de revenir à la ligne si l'espace est petit */
 }
+
+
 
 /* Changement de couleur quand la souris passe sur un bouton */
 .vibz-nav button:hover {
