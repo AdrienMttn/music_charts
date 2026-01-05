@@ -1,5 +1,6 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import artist from '@/views/artist.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import artist from '@/views/artist.vue';
+import login from '@/views/login.vue';
 import Registration from '@/views/registration.vue';
 
 const router = createRouter({
@@ -8,6 +9,10 @@ const router = createRouter({
     {
       path: '/artist/:id',
       component: artist
+    },
+    {
+      path: '/login',
+      component: login
     },
     {
       path: '/registration',
