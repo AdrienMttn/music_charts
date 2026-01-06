@@ -13,7 +13,6 @@ export async function GetWeeklyTop(req, res) {
       [date, country]
     );
     const Classement = rows[0].map((item) => ({
-      music : { 
         id : item.MusicId, 
         titre : item.TitreMusic, 
         rang : item.rank , 
@@ -30,18 +29,13 @@ export async function GetWeeklyTop(req, res) {
             description : item.description
           } 
         },
-    }
-  }
-)
-);
-    const Json = {
-      weeklyTop : {
-        country: country,
-        date: date,
-      },
+  }));
+    const WeeklyTop = {
+      country: country,
+      date: date,
       Classement
     };
-    return res.json(Json);
+    return res.json(WeeklyTop);
   } catch (err) {
     return res.status(500).json({ error: "Failed to fetch weekly top data" });
   }
