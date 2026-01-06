@@ -1,3 +1,9 @@
+<script setup lang="ts">
+import { Music } from "@/models/music";
+
+const props = defineProps<{ music: Music }>();
+</script>
+
 <template>
   <div class="vibz-hero-flex">
     <div class="vibz-content-column">
@@ -14,11 +20,11 @@
       </div>
     </div>
 
-    <div class="vibz-image-column">
+    <div class="flex-[0.8] flex justify-center items-center w-full">
       <img 
-        src="/src/assets/tyler-chromakopia.png" 
-        alt="Tyler" 
-        class="hero-img-styled"
+        :src="props.music.getAlbum().getCoverUrl()"
+        alt="Artiste Image" 
+        class="grayscale w-full rounded-[12px] shadow-[0_20px_40px_rgba(0,0,0,0.3)] transform rotate-[-10deg] max-[1024px]:rotate-[-5deg] "
       />
     </div>
   </div>
@@ -74,21 +80,6 @@
   color: #64067C;
   transform: translateY(-3px);
 }
-
-.vibz-image-column {
-  flex: 0.8;
-  display: flex;
-  justify-content: center;
-}
-
-.hero-img-styled {
-  width: 100%;
-  max-width: 400px;
-  border-radius: 12px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-  transform: rotate(-10deg);
-}
-
 /* RESPONSIVE : Mode Vertical */
 @media (max-width: 1024px) {
   .vibz-hero-flex {
@@ -98,6 +89,5 @@
   }
   .vibz-sous-title { text-align: center; }
   .vibz-buttons-hero { justify-content: center; }
-  .hero-img-styled { max-width: 280px; transform: rotate(-5deg); }
 }
 </style>
