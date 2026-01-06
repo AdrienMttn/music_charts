@@ -5,16 +5,18 @@ const props = defineProps<{ music: Music }>();
 </script>
 
 <template>
-  <div class="vibz-hero-flex">
-    <div class="vibz-content-column">
-      <section class="vibz-sous-title-section-hero">
-        <h1 class="vibz-sous-title">
+  <div class="flex flex-col-reverse lg:flex-row items-center justify-between mt-10 lg:mt-10 mx-[5%] lg:ml-[10%] lg:mr-[8%] gap-10">
+    
+    <div class="flex-[1.2] flex flex-col gap-[30px] w-full">
+      
+      <section>
+        <h1 class="text-white font-medium leading-[1.2] text-left lg:text-left max-lg:text-center text-[clamp(1.2rem,3.5vw,2.5rem)]">
           Une sensation vibrante du meilleur titre du mois. <br />
           Laissez-vous emporter par cette mélodie qui définisse la saison !
         </h1>
       </section>
       
-      <div class="vibz-buttons-hero">
+      <div class="flex gap-5 max-lg:justify-center">
         <button class="btn-styled">▶ Lecture</button>
         <button class="btn-styled">Connexion</button>
       </div>
@@ -24,41 +26,14 @@ const props = defineProps<{ music: Music }>();
       <img 
         :src="props.music.getAlbum().getCoverUrl()"
         alt="Artiste Image" 
-        class="grayscale w-full rounded-[12px] shadow-[0_20px_40px_rgba(0,0,0,0.3)] transform rotate-[-10deg] max-[1024px]:rotate-[-5deg] "
+        class="grayscale w-full rounded-[12px] shadow-[0_20px_40px_rgba(0,0,0,0.3)] transform rotate-[-5deg] lg:rotate-[-10deg]"
       />
     </div>
   </div>
 </template>
 
 <style scoped>
-.vibz-hero-flex {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 40px 8% 0 10%;
-  gap: 40px;
-}
-
-.vibz-content-column {
-  flex: 1.2;
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-}
-
-.vibz-sous-title {
-  font-size: clamp(1.2rem, 3.5vw, 2.5rem);
-  text-align: left;
-  font-weight: 500;
-  line-height: 1.2;
-  color: white;
-}
-
-.vibz-buttons-hero {
-  display: flex;
-  gap: 20px;
-}
-
+/* On garde exactement ton style de bouton complexe ici pour ne pas le dénaturer */
 .btn-styled {
   padding: 14px 32px;
   min-width: 160px;
@@ -79,15 +54,5 @@ const props = defineProps<{ music: Music }>();
   background: white;
   color: #64067C;
   transform: translateY(-3px);
-}
-/* RESPONSIVE : Mode Vertical */
-@media (max-width: 1024px) {
-  .vibz-hero-flex {
-    flex-direction: column-reverse;
-    text-align: center;
-    margin: 20px 5%;
-  }
-  .vibz-sous-title { text-align: center; }
-  .vibz-buttons-hero { justify-content: center; }
 }
 </style>
