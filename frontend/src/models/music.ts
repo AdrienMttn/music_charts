@@ -1,13 +1,18 @@
+import { Album } from "./album";
 export class Music {
     private id: string;
     private title: string;
-    private albumId: string;
+    private album: Album;
+    private rank: number ;
+    private rankPrevious: number;
 
 
-    constructor(id: string, title: string, albumId: string) {
+    constructor(id: string, title: string, album: Album, rank?: number, rankPrevious?: number) {
         this.id = id;
         this.title = title;
-        this.albumId = albumId;
+        this.album = album;
+        this.rank = rank || 0;
+        this.rankPrevious = rankPrevious || 0 ;
     }
 
     //#region Getters
@@ -17,8 +22,14 @@ export class Music {
     getTitle(): string {
         return this.title;
     }
-    getAlbumId(): string {
-        return this.albumId;
+    getAlbum(): Album {
+        return this.album;
+    }
+    getRank(): number {
+        return this.rank;
+    }
+    getRankPrevious(): number {
+        return this.rankPrevious;
     }
     //#endregion
 }

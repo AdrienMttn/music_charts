@@ -13,7 +13,6 @@ export async function GetWeeklyTop(req, res) {
       [date, country]
     );
     const Classement = rows[0].map((item) => ({
-      music : { 
         id : item.MusicId, 
         titre : item.TitreMusic, 
         rang : item.rank , 
@@ -30,7 +29,6 @@ export async function GetWeeklyTop(req, res) {
             description : item.description
           } 
         },
-    }
   }
 )
 );

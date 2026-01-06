@@ -1,18 +1,19 @@
 import { Music } from "./music";
+import { Artist } from "./artist";
 export class Album {
     private id: string;
     private title: string
     private coverUrl: string;
     private releaseYear: number | null;
-    private artistId: string;
+    private artist: Artist;
     private musics: Music[];
 
-    constructor(id: string, title: string, coverUrl: string, releaseYear: number | null, artistId: string) {
+    constructor(id: string, title: string, coverUrl: string, releaseYear: number | null, artist: Artist) {
         this.id = id;
         this.title = title;
         this.coverUrl = coverUrl;
         this.releaseYear = releaseYear;
-        this.artistId = artistId;
+        this.artist = artist;
         this.musics = [];
     }
 
@@ -33,8 +34,8 @@ export class Album {
         return this.releaseYear;
     }
 
-    getArtistId(): string {
-        return this.artistId;
+    getArtist(): Artist {
+        return this.artist;
     }
 
     getMusics(): Music[] {

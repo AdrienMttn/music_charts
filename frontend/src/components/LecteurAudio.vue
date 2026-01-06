@@ -5,10 +5,13 @@
 <script setup lang="ts">
 import { Music } from '@/models/music';
 import MusicServices from '@/Services/MusicServices';
-import { ref } from 'vue';
+import { Album } from '@/models/album';
+import { Artist } from '@/models/artist';
+import { Ref, ref } from 'vue';
 
-const laMusic = new Music("_ekNixoAiAM", "Bolide allemand", "MPREb_UhI8E0HJjgi");
-const Musicid = laMusic.getId();
+const listMusic: Ref<Music[]> = ref([]);
+const indexMusic = ref(0);
+const laMusic: Ref<Music | undefined> = ref(undefined);
 const AudioLink = ref<any | undefined>(undefined);
 
 // État du lecteur
@@ -17,12 +20,46 @@ const isPlaying = ref(false); // État de lecture
 const currentTime = ref(0); // Temps actuel
 const duration = ref(0); // Durée totale
 
+// Récupération des données musicales
+async function GetTop() {
+  const data = await MusicServices.GetWeeklyTop("2026-01-05","PL4fGSI1pDJn7bK3y1Hx-qpHBqfr6cesNs");
+  listMusic.value = data.Classement.map((UneMusic: any) => (
+      new Music(
+        UneMusic.id,
+        UneMusic.title,
+        new Album(
+          UneMusic.album.id,
+          UneMusic.album.titreAlbum,
+          UneMusic.album.CoverUrl,
+          UneMusic.album.ReleaseYear,
+          // Assuming artist data is available in UneMusic.album.artist
+          new Artist(
+            UneMusic.album.artist.id,
+            UneMusic.album.artist.name,
+            UneMusic.album.artist.imageUrl,
+            UneMusic.album.artist.description
+          )
+        ),
+        UneMusic.rang,
+        UneMusic.rangPrecedent,        
+      )
+  ));
+  GetMusic();
+}
+async function GetMusic(){
+  laMusic.value = listMusic.value[indexMusic.value];
+  GetAudio();
+  console.log(laMusic.value);
+}
 async function GetAudio() {
-  AudioLink.value = await MusicServices.GetAudioUrl(Musicid);
+
+  AudioLink.value = await MusicServices.GetAudioUrl(laMusic.value?.getId() || '');
   console.log(AudioLink.value?.Url);
 }
-
-GetAudio();
+GetTop();
+// console.log("List Musique : "+ listMusic.value);
+;
+ 
 
 // Lecture/Pause
 function togglePlay() {
@@ -76,13 +113,19 @@ function backward() {
 
 // Piste suivante (à adapter avec votre système de playlist)
 function nextTrack() {
-  // TODO: implémenter la logique de piste suivante
+  indexMusic.value = (indexMusic.value + 1) % listMusic.value.length;
+  GetMusic();
+  togglePlay();
+  togglePlay();
   console.log('Piste suivante');
 }
 
 // Piste précédente (à adapter avec votre système de playlist)
 function previousTrack() {
-  // TODO: implémenter la logique de piste précédente
+  indexMusic.value = (indexMusic.value - 1 + listMusic.value.length) % listMusic.value.length;
+  GetMusic();
+  togglePlay();
+  togglePlay();
   console.log('Piste précédente');
 }
 
@@ -96,7 +139,7 @@ function formatTime(time: number): string {
 </script>
 
 <template>
-  <div v-if="AudioLink">
+  <div v-if="listMusic.length > 0 && AudioLink">
     <!-- Lecteur audio fixé en bas -->
     <div class="fixed bottom-0 left-0 right-0 bg-gray-800 shadow-2xl border-t border-gray-700 z-50">
       <div class="w-full px-6 py-4">
@@ -125,7 +168,7 @@ function formatTime(time: number): string {
         <div class="flex items-center justify-between gap-6">
           <!-- Image de la musique -->
           <div class="w-12 h-12 rounded-lg overflow-hidden"> 
-            <img src='https://lh3.googleusercontent.com/tpyWefk2rTwpllAgJ5BoVpCVuvU9wY8vCh8SEf0dr-b0wzb51q40MgJSwsrhM_f5LGVEy9eS2zPFNos=w2880-h1200-p-l90-rj' alt="Image de la musique" class="w-full h-full object-cover" />
+            <img :src="laMusic.getAlbum().getCoverUrl()" alt="Image de la musique" class="w-full h-full object-cover" />
           </div>
 
           <!-- Titre de la musique -->
