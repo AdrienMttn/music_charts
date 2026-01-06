@@ -54,7 +54,7 @@ InitWeeklyTop();
       </h1>
     </section>
 
-    <VibzHero :music="weeklyTop?.getListMusic()[0]" />
+    <VibzHero v-if="weeklyTop?.getListMusic()[0]" :music="weeklyTop.getListMusic()[0]" />
 
     <div class="max-w-[1100px] mx-auto my-[80px] px-[5%]">
       
