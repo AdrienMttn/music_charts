@@ -1,29 +1,30 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import artist from '@/views/artist.vue';
-import login from '@/views/login.vue';
-import Registration from '@/views/registration.vue';
-import Lecteur from '@/views/Lecteur.vue';
+import { createRouter, createWebHistory } from "vue-router";
+import accueil from "@/views/Accueil.vue";
+import artist from "@/views/artist.vue";
+import login from "@/views/login.vue";
+import Registration from "@/views/registration.vue";
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
-      path: '/artist/:id',
-      component: artist
+      path: "/",
+      name: "Accueil",
+      component: accueil,
     },
     {
-      path: '/login',
-      component: login
+      path: "/artist/:id",
+      component: artist,
     },
     {
-      path: '/registration',
-      component: Registration
+      path: "/login",
+      component: login,
     },
     {
-      path : '/lecteur',
-      component : Lecteur
-    }
+      path: "/registration",
+      component: Registration,
+    },
   ],
-})
+});
 
 export default router;

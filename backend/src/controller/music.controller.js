@@ -29,17 +29,13 @@ export async function GetWeeklyTop(req, res) {
             description : item.description
           } 
         },
-  }
-)
-);
-    const Json = {
-      weeklyTop : {
-        country: country,
-        date: date,
-      },
+  }));
+    const WeeklyTop = {
+      country: country,
+      date: date,
       Classement
     };
-    return res.json(Json);
+    return res.json(WeeklyTop);
   } catch (err) {
     return res.status(500).json({ error: "Failed to fetch weekly top data" });
   }

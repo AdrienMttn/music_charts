@@ -3,16 +3,16 @@ export class Music {
     private id: string;
     private title: string;
     private album: Album;
-    private rank: number ;
-    private rankPrevious: number;
+    private rank:number;
+    private previousRank:number;
 
 
-    constructor(id: string, title: string, album: Album, rank?: number, rankPrevious?: number) {
+    constructor(id: string, title: string, album: Album, rank?: number, previousRank?: number) {
         this.id = id;
         this.title = title;
         this.album = album;
         this.rank = rank || 0;
-        this.rankPrevious = rankPrevious || 0 ;
+        this.previousRank = previousRank || 0;
     }
 
     //#region Getters
@@ -28,8 +28,8 @@ export class Music {
     getRank(): number {
         return this.rank;
     }
-    getRankPrevious(): number {
-        return this.rankPrevious;
+    getPreviousRank(): number {
+        return this.previousRank;
     }
     //#endregion
 }
