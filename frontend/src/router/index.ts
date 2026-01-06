@@ -1,3 +1,5 @@
+import { createRouter, createWebHistory } from "vue-router";
+import accueil from "@/views/Accueil.vue";
 import { createRouter, createWebHistory } from 'vue-router';
 import artist from '@/views/artist.vue';
 import login from '@/views/login.vue';
@@ -6,6 +8,11 @@ import Registration from '@/views/registration.vue';
 const router = createRouter({
   history: createWebHistory(),
   routes: [
+    {
+      path: "/",
+      name: "Accueil",
+      component: accueil,
+    },
     {
       path: '/artist/:id',
       component: artist
@@ -19,6 +26,6 @@ const router = createRouter({
       component: Registration
     }
   ],
-})
+});
 
 export default router;
