@@ -13,3 +13,5 @@ import VibzFooter from "./components/VibzFooter.vue";
   </div>
 </template>
 
+<style scoped>
+</style>
