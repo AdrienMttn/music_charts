@@ -1,7 +1,3 @@
-// TODO: implémenter la logique de piste suivante
-// TODO: implémenter la logique de piste précédente
-// TODO: implémenter Image dans barre audio
-
 <script setup lang="ts">
 import { Music } from '@/models/music';
 import MusicServices from '@/Services/MusicServices';
@@ -26,7 +22,7 @@ async function GetTop() {
   listMusic.value = data.Classement.map((UneMusic: any) => (
       new Music(
         UneMusic.id,
-        UneMusic.title,
+        UneMusic.titre,
         new Album(
           UneMusic.album.id,
           UneMusic.album.titreAlbum,
@@ -49,15 +45,12 @@ async function GetTop() {
 async function GetMusic(){
   laMusic.value = listMusic.value[indexMusic.value];
   GetAudio();
-  console.log(laMusic.value);
 }
 async function GetAudio() {
 
   AudioLink.value = await MusicServices.GetAudioUrl(laMusic.value?.getId() || '');
-  console.log(AudioLink.value?.Url);
 }
 GetTop();
-// console.log("List Musique : "+ listMusic.value);
 ;
  
 
@@ -112,21 +105,15 @@ function backward() {
 }
 
 // Piste suivante (à adapter avec votre système de playlist)
-function nextTrack() {
+async function nextTrack() {
   indexMusic.value = (indexMusic.value + 1) % listMusic.value.length;
-  GetMusic();
-  togglePlay();
-  togglePlay();
-  console.log('Piste suivante');
+  await GetMusic();
 }
 
 // Piste précédente (à adapter avec votre système de playlist)
-function previousTrack() {
-  indexMusic.value = (indexMusic.value - 1 + listMusic.value.length) % listMusic.value.length;
-  GetMusic();
-  togglePlay();
-  togglePlay();
-  console.log('Piste précédente');
+async function previousTrack() {
+  indexMusic.value = (indexMusic.value - 1 + listMusic.value.length) % listMusic.value.length; // Pour gérer le cas où l'index devient négatif
+  await GetMusic();
 }
 
 // Formater le temps
@@ -149,7 +136,9 @@ function formatTime(time: number): string {
           :src="AudioLink.Url"
           @timeupdate="onTimeUpdate"
           @loadedmetadata="onLoadedMetadata"
+          @ended="nextTrack"
           class="hidden"
+          autoplay
         ></audio>
 
         <!-- Barre de progression -->
@@ -175,8 +164,8 @@ function formatTime(time: number): string {
           <div class="flex-1 min-w-0">
             <p class="text-white font-semibold truncate">{{ laMusic.getTitle() }}</p>
             <p class="text-gray-400 text-sm">{{ formatTime(currentTime) }} / {{ formatTime(duration) }}</p>
-          </div>
-
+            <p class="text-gray-400 text-sm truncate">{{ laMusic.getAlbum().getArtist().getName() }}</p>
+          </div>       
           <!-- Boutons de contrôle -->
           <div class="flex items-center gap-3">
             <!-- Piste précédente -->
@@ -206,7 +195,7 @@ function formatTime(time: number): string {
               @click="togglePlay"
               class="w-10 h-10 bg-fuchsia-500 hover:bg-fuchsia-600 rounded-full flex items-center justify-center text-white transition"
             >
-              <svg v-if="!isPlaying" class="w-5 h-5 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+              <svg v-if="audioRef && audioRef.paused" class="w-5 h-5 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M8 5v14l11-7z" />
               </svg>
               <svg v-else class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
