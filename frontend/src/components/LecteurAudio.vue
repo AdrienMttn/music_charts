@@ -55,7 +55,7 @@ GetTop();
  
 
 // Lecture/Pause
-function togglePlay() {
+function togglePlay() { 
   if (!audioRef.value) return;
   
   if (isPlaying.value) {
@@ -67,7 +67,7 @@ function togglePlay() {
 }
 
 // Mise à jour du temps
-function onTimeUpdate() {
+function onTimeUpdate() { 
   if (audioRef.value) {
     currentTime.value = audioRef.value.currentTime;
   }
@@ -104,13 +104,13 @@ function backward() {
   }
 }
 
-// Piste suivante (à adapter avec votre système de playlist)
+// Piste suivante 
 async function nextTrack() {
   indexMusic.value = (indexMusic.value + 1) % listMusic.value.length;
   await GetMusic();
 }
 
-// Piste précédente (à adapter avec votre système de playlist)
+// Piste précédente 
 async function previousTrack() {
   indexMusic.value = (indexMusic.value - 1 + listMusic.value.length) % listMusic.value.length; // Pour gérer le cas où l'index devient négatif
   await GetMusic();
@@ -135,7 +135,7 @@ function formatTime(time: number): string {
           ref="audioRef"
           :src="AudioLink.Url"
           @timeupdate="onTimeUpdate"
-          @loadedmetadata="onLoadedMetadata"
+          @loadedmetadata="onLoadedMetadata" 
           @ended="nextTrack"
           class="hidden"
           autoplay
