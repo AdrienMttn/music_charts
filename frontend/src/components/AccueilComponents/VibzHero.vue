@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Music } from "@/models/music";
+import type router from "@/router";
 
 const props = defineProps<{ music: Music }>();
 </script>
@@ -16,9 +17,9 @@ const props = defineProps<{ music: Music }>();
         </h1>
       </section>
       
-      <div class="flex gap-5 max-lg:justify-center">
+      <div class="flex gap-5 justify-center-safe">
         <button class="btn-styled">▶ Lecture</button>
-        <button class="btn-styled">Connexion</button>
+        <router-link to="/login" class="btn-styled no-underline flex items-center justify-center"> Connexion </router-link>
       </div>
     </div>
 
@@ -26,7 +27,7 @@ const props = defineProps<{ music: Music }>();
       <img 
         :src="props.music.getAlbum().getCoverUrl()"
         alt="Artiste Image" 
-        class="grayscale w-full rounded-[12px] shadow-[0_20px_40px_rgba(0,0,0,0.3)] transform rotate-[-5deg] lg:rotate-[-10deg]"
+        class="grayscale w-full rounded-[12px] shadow-[0_20px_40px_rgba(0,0,0,0.3)] transform rotate-[-5deg] lg:rotate-[-10deg] -translate-y-5 lg:-translate-y-20"
       />
     </div>
   </div>

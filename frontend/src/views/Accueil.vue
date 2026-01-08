@@ -7,6 +7,7 @@ import MusicServices from "@/Services/MusicServices";
 import { Music } from "@/models/music";
 import { Album } from "@/models/album";
 import { Artist } from "@/models/artist";
+import VibzDateSemaine from "@/components/AccueilComponents/VibzDateSemaine.vue";
 
 
 
@@ -49,7 +50,7 @@ InitWeeklyTop();
   <div class="relative w-full overflow-x-hidden">
 
     <section class="flex justify-center mt-[40px]">
-      <h1 class="text-white text-center uppercase font-thin tracking-[6px] text-[clamp(3rem,15vw,3rem)]">
+      <h1 class="text-white text-center uppercase font-thin tracking-[6px] text-[clamp(6rem,20vw,6rem)]">
         VIBZ
       </h1>
     </section>
@@ -58,23 +59,26 @@ InitWeeklyTop();
 
     <div class="max-w-[1100px] mx-auto my-[80px] px-[5%]">
       
-      <p class="text-white text-[1.4rem] mb-[25px]">
-        Top 20 Hits <br/> 
-        <strong class="font-bold">Voici le top 20 de la semaine : </strong>
-      </p>
+    <div class="flex flex-col md:flex-row md:items-baseline justify-between gap-4 mb-[25px]">
+  
+  <p class="text-white text-[2.4rem] font-bold">
+    Top hits de la semaine
+  </p>
+  <VibzDateSemaine v-if="weeklyTop" :dateSemaine="weeklyTop" />
+</div>
 
-      <div class="w-full">
-        <table class="w-full border-separate border-spacing-y-[10px]">
-          <thead>
-            <tr class="text-white text-left">
-              <th class="px-[20px] py-[12px] font-semibold">Rang</th>
-              <th class="px-[20px] py-[12px] font-semibold">Image</th>
-              <th class="px-[20px] py-[12px] font-semibold">Titre</th>
-              <th class="px-[20px] py-[12px] font-semibold">Artiste</th>
-              <th class="px-[20px] py-[12px] font-semibold">Album</th>
-              <th class="px-[20px] py-[12px] font-semibold">Date de sortie</th>
-            </tr>
-          </thead>
+    <div class="w-full">
+      <table class="w-full border-separate border-spacing-y-[10px]">
+        <thead>
+          <tr class="text-white text-left">
+            <th class="px-[20px] py-[12px] font-semibold">Rang</th>
+            <th class="px-[20px] py-[12px] font-semibold">Image</th>
+            <th class="px-[20px] py-[12px] font-semibold">Titre</th>
+            <th class="px-[20px] py-[12px] font-semibold">Artiste</th>
+            <th class="px-[20px] py-[12px] font-semibold">Album</th>
+            <th class="px-[20px] py-[12px] font-semibold">Date de sortie</th>
+          </tr>
+        </thead>
           
           <VibzHitsTable v-if="weeklyTop?.getListMusic()" :musics="weeklyTop.getListMusic()" />
         </table>
