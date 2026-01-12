@@ -15,7 +15,7 @@ const props = defineProps<{ music: Music }>();
       </section>
       
       <div class="vibz-buttons-hero">
-        <button class="btn-styled">▶ Lecture</button>
+        <button class="btn-styled" @click="$emit('LireMusic')" >Lecture</button>
         <button class="btn-styled">Connexion</button>
       </div>
     </div>
