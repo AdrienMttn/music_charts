@@ -33,13 +33,19 @@
 
 
 
-console.log(artists);
-
 </script>
 
 <template>
-<div class="flex flex-wrap gap-4 p-4">
-  <ArtistCard v-for="artist in artists" :key="artist.getId()" :unArtist="artist" />
+<div>
+  <div class="flex justify-center">
+    <input type="text" placeholder="Rechercher un artiste" class="flex items-center input border rounded-2xl px-4 py-2 mb-4 " />
+    <button class="btn btn-primary bg-transparent border rounded-lg p-2 pl-6 pr-6 ml-3 mb-4 transition-all duration-300 hover:bg-white hover:text-[#64067C] hover:-translate-y-1">
+      Valider
+    </button>
+  </div>
+  <div class="flex flex-wrap gap-4 p-4">
+    <ArtistCard v-for="artist in artists" :key="artist.getId()" :unArtist="artist" />
+  </div>
 </div>
 
 </template>
