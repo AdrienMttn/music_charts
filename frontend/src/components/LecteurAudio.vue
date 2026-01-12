@@ -1,14 +1,13 @@
-// TODO: implémenter la logique de piste suivante
-// TODO: implémenter la logique de piste précédente
-// TODO: implémenter Image dans barre audio
-
 <script setup lang="ts">
 import { Music } from '@/models/music';
 import MusicServices from '@/Services/MusicServices';
-import { ref } from 'vue';
+import { Album } from '@/models/album';
+import { Artist } from '@/models/artist';
+import { Ref, ref } from 'vue';
 
-const laMusic = new Music("_ekNixoAiAM", "Bolide allemand", "MPREb_UhI8E0HJjgi");
-const Musicid = laMusic.getId();
+const listMusic: Ref<Music[]> = ref([]);
+const indexMusic = ref(0);
+const laMusic: Ref<Music | undefined> = ref(undefined);
 const AudioLink = ref<any | undefined>(undefined);
 
 // État du lecteur
@@ -17,15 +16,46 @@ const isPlaying = ref(false); // État de lecture
 const currentTime = ref(0); // Temps actuel
 const duration = ref(0); // Durée totale
 
-async function GetAudio() {
-  AudioLink.value = await MusicServices.GetAudioUrl(Musicid);
-  console.log(AudioLink.value?.Url);
+// Récupération des données musicales
+async function GetTop() {
+  const data = await MusicServices.GetWeeklyTop("2026-01-05","PL4fGSI1pDJn7bK3y1Hx-qpHBqfr6cesNs");
+  listMusic.value = data.Classement.map((UneMusic: any) => (
+      new Music(
+        UneMusic.id,
+        UneMusic.titre,
+        new Album(
+          UneMusic.album.id,
+          UneMusic.album.titreAlbum,
+          UneMusic.album.CoverUrl,
+          UneMusic.album.ReleaseYear,
+          // Assuming artist data is available in UneMusic.album.artist
+          new Artist(
+            UneMusic.album.artist.id,
+            UneMusic.album.artist.name,
+            UneMusic.album.artist.imageUrl,
+            UneMusic.album.artist.description
+          )
+        ),
+        UneMusic.rang,
+        UneMusic.rangPrecedent,        
+      )
+  ));
+  GetMusic();
 }
+async function GetMusic(){
+  laMusic.value = listMusic.value[indexMusic.value];
+  GetAudio();
+}
+async function GetAudio() {
 
-GetAudio();
+  AudioLink.value = await MusicServices.GetAudioUrl(laMusic.value?.getId() || '');
+}
+GetTop();
+;
+ 
 
 // Lecture/Pause
-function togglePlay() {
+function togglePlay() { 
   if (!audioRef.value) return;
   
   if (isPlaying.value) {
@@ -37,7 +67,7 @@ function togglePlay() {
 }
 
 // Mise à jour du temps
-function onTimeUpdate() {
+function onTimeUpdate() { 
   if (audioRef.value) {
     currentTime.value = audioRef.value.currentTime;
   }
@@ -74,16 +104,16 @@ function backward() {
   }
 }
 
-// Piste suivante (à adapter avec votre système de playlist)
-function nextTrack() {
-  // TODO: implémenter la logique de piste suivante
-  console.log('Piste suivante');
+// Piste suivante 
+async function nextTrack() {
+  indexMusic.value = (indexMusic.value + 1) % listMusic.value.length;
+  await GetMusic();
 }
 
-// Piste précédente (à adapter avec votre système de playlist)
-function previousTrack() {
-  // TODO: implémenter la logique de piste précédente
-  console.log('Piste précédente');
+// Piste précédente 
+async function previousTrack() {
+  indexMusic.value = (indexMusic.value - 1 + listMusic.value.length) % listMusic.value.length; // Pour gérer le cas où l'index devient négatif
+  await GetMusic();
 }
 
 // Formater le temps
@@ -96,7 +126,7 @@ function formatTime(time: number): string {
 </script>
 
 <template>
-  <div v-if="AudioLink">
+  <div v-if="listMusic.length > 0 && AudioLink">
     <!-- Lecteur audio fixé en bas -->
     <div class="fixed bottom-0 left-0 right-0 bg-gray-800 shadow-2xl border-t border-gray-700 z-50">
       <div class="w-full px-6 py-4">
@@ -105,8 +135,10 @@ function formatTime(time: number): string {
           ref="audioRef"
           :src="AudioLink.Url"
           @timeupdate="onTimeUpdate"
-          @loadedmetadata="onLoadedMetadata"
+          @loadedmetadata="onLoadedMetadata" 
+          @ended="nextTrack"
           class="hidden"
+          autoplay
         ></audio>
 
         <!-- Barre de progression -->
@@ -125,15 +157,15 @@ function formatTime(time: number): string {
         <div class="flex items-center justify-between gap-6">
           <!-- Image de la musique -->
           <div class="w-12 h-12 rounded-lg overflow-hidden"> 
-            <img src='https://lh3.googleusercontent.com/tpyWefk2rTwpllAgJ5BoVpCVuvU9wY8vCh8SEf0dr-b0wzb51q40MgJSwsrhM_f5LGVEy9eS2zPFNos=w2880-h1200-p-l90-rj' alt="Image de la musique" class="w-full h-full object-cover" />
+            <img :src="laMusic.getAlbum().getCoverUrl()" alt="Image de la musique" class="w-full h-full object-cover" />
           </div>
 
           <!-- Titre de la musique -->
           <div class="flex-1 min-w-0">
             <p class="text-white font-semibold truncate">{{ laMusic.getTitle() }}</p>
             <p class="text-gray-400 text-sm">{{ formatTime(currentTime) }} / {{ formatTime(duration) }}</p>
-          </div>
-
+            <p class="text-gray-400 text-sm truncate">{{ laMusic.getAlbum().getArtist().getName() }}</p>
+          </div>       
           <!-- Boutons de contrôle -->
           <div class="flex items-center gap-3">
             <!-- Piste précédente -->
@@ -163,7 +195,7 @@ function formatTime(time: number): string {
               @click="togglePlay"
               class="w-10 h-10 bg-fuchsia-500 hover:bg-fuchsia-600 rounded-full flex items-center justify-center text-white transition"
             >
-              <svg v-if="!isPlaying" class="w-5 h-5 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+              <svg v-if="audioRef && audioRef.paused" class="w-5 h-5 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M8 5v14l11-7z" />
               </svg>
               <svg v-else class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
