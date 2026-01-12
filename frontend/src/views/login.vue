@@ -112,8 +112,8 @@ async function VerifLogin() {
       </div>
 
       <button
-        class="font-bold pt-4 hover:text-gray-600"
-        @click="router.push('/register')"
+        class="font-bold pt-4 text-black hover:text-gray-600"
+        @click="router.push('/registration')"
       >
         Pas de compte ? S'inscrire
       </button>

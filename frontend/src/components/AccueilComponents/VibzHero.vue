@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Music } from "@/models/music";
-import type router from "@/router";
+
 
 const props = defineProps<{ music: Music }>();
 </script>

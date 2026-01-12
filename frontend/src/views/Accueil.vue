@@ -13,13 +13,14 @@ import VibzDateSemaine from "@/components/AccueilComponents/VibzDateSemaine.vue"
 
 const weeklyTop : Ref<WeeklyTop | null>= ref(null);
 
-async function InitWeeklyTop() {
-  const res = await MusicServices.GetWeeklyTop("2025-11-25","PL4fGSI1pDJn7bK3y1Hx-qpHBqfr6cesNs");
+async function InitWeeklyTop(p_date: string = "2025-11-25") {
+  const countryId = "PL4fGSI1pDJn7bK3y1Hx-qpHBqfr6cesNs"; // France par défaut
+  const res = await MusicServices.GetWeeklyTop(p_date, countryId);
   
   const listMusic: Music[] = res.Classement.map((music:any) => {
     return new Music(
       music.id,
-      music.titre,
+      music.titre,  
       new Album(
         music.album.id,
         music.album.titreAlbum,
@@ -64,7 +65,11 @@ InitWeeklyTop();
   <p class="text-white text-[2.4rem] font-bold">
     Top hits de la semaine
   </p>
-  <VibzDateSemaine v-if="weeklyTop" :dateSemaine="weeklyTop" />
+  <VibzDateSemaine 
+          v-if="weeklyTop" 
+          :dateSemaine="weeklyTop" 
+          @change-week="(date) => InitWeeklyTop(date)" 
+        />
 </div>
 
     <div class="w-full">

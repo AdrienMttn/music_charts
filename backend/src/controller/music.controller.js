@@ -1,5 +1,20 @@
 import connection from "../config/bd_cnx.js";
 
+export async function GetDateWeek(req, res) {
+  try {
+    const [rows] = await connection.execute(
+      'call GetDateWeek()'
+    );
+    const DateWeek = rows[0].map((item) => ({
+      dateSemaine: item.dateSemaine,
+    }));
+    return res.json(DateWeek);
+  }
+  catch (err) {
+    return res.status(500).json({ error: "Failed to fetch date week data" });
+  }
+}
+
 export async function GetWeeklyTop(req, res) {
   // Récupère le top de la semaine (attend une date et un pays)
   try {
