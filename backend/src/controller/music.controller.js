@@ -117,3 +117,21 @@ export async function GetAudioUrl(req, res) {
     return res.status(500).json({ error: "Failed to fetch audio URL" });
   }
 }
+
+export async function GetAllArtists (req, res){
+  try {
+    const [rows] = await connection.execute(
+      'call GetAllArtists ()'
+    );
+    const artists = rows[0].map((item) => ({
+        id : item.id, 
+        name : item.name, 
+        imageUrl : item.imageUrl, 
+        description : item.description
+  }));
+    return res.json({ artists });
+  } catch (err) {
+    console.error('Error in GetAllArtists:', err);
+    return res.status(500).json({ error: "Failed to fetch all artists" });
+  }
+}
