@@ -41,8 +41,32 @@ export default class MusicServices {
           return error;
         }
     }
+
+    static async GetAllArtists() {
+        try {
+            const response = await fetch(`/api/GetAllArtists/`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            return await response.json();
+        } catch (error : any) {
+          return error;
+        }
+    }
+    static async GetArtistsByName(artistName : string) {
+        try {
+            const response = await fetch(`/api/GetArtistsByName/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ artistName }),
+            });
+            return await response.json();
+        } catch (error : any) {
+          return error;
+        }
+    }
 }
-
-
-
-

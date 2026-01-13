@@ -86,7 +86,7 @@ async function VerifLogin() {
         v-model="form.email"
         type="text"
         :class="[
-          'bg-gray-300 rounded-md p-1 w-full border-2',
+          'text-gray-800 bg-gray-300 rounded-md p-1 w-full border-2',
           errors.email ? 'border-red-600 mb-1' : 'mb-4 border-transparent',
         ]"
       />
@@ -104,7 +104,7 @@ async function VerifLogin() {
         v-model="form.username"
         type="text"
         :class="[
-          'bg-gray-300 rounded-md p-1 w-full border-2',
+          'text-gray-800 bg-gray-300 rounded-md p-1 w-full border-2',
           errors.username ? 'border-red-600 mb-1' : 'mb-4 border-transparent',
         ]"
       />
@@ -120,7 +120,7 @@ async function VerifLogin() {
         v-model="form.password"
         type="password"
         :class="[
-          'bg-gray-300 rounded-md p-1 w-full border-2',
+          'text-gray-800 bg-gray-300 rounded-md p-1 w-full border-2',
           errors.password ? 'border-red-600 mb-1' : 'mb-4 border-transparent',
         ]"
       />
@@ -138,7 +138,7 @@ async function VerifLogin() {
         v-model="form.confirmPassword"
         type="password"
         :class="[
-          'bg-gray-300 rounded-md p-1 w-full border-2',
+          'text-gray-800 bg-gray-300 rounded-md p-1 w-full border-2',
           errors.confirmPassword
             ? 'border-red-600 mb-1'
             : 'mb-4 border-transparent',

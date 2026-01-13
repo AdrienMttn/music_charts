@@ -7,11 +7,12 @@ import MusicServices from "@/Services/MusicServices";
 import { Music } from "@/models/music";
 import { Album } from "@/models/album";
 import { Artist } from "@/models/artist";
+import LecteurAudio from "@/components/LecteurAudio.vue";
 
 
 
 const weeklyTop : Ref<WeeklyTop | null>= ref(null);
-
+const indexDeLaMusic: Ref<number> = ref(0);
 async function InitWeeklyTop() {
   const res = await MusicServices.GetWeeklyTop("2025-11-25","PL4fGSI1pDJn7bK3y1Hx-qpHBqfr6cesNs");
   
@@ -43,18 +44,29 @@ async function InitWeeklyTop() {
   console.log(weeklyTop.value);
 }
 InitWeeklyTop();
+const LecteurAudioVisible: Ref<boolean> = ref(false);
+
+function LireMusic() {
+  LecteurAudioVisible.value = !LecteurAudioVisible.value;
+  console.log("Lecture de la musique");
+}
+
+function LireMusicParIndex(index: number) {
+  LecteurAudioVisible.value = true;
+  indexDeLaMusic.value = index;
+}
 </script>
 
 <template>
-  <div class="relative w-full overflow-x-hidden">
+  <div class="relative w-full overflow-x-hidden" :class="LecteurAudioVisible ? 'pb-24' : 'pb-0'">
 
     <section class="flex justify-center mt-[40px]">
       <h1 class="text-white text-center uppercase font-thin tracking-[6px] text-[clamp(3rem,15vw,3rem)]">
         VIBZ
       </h1>
     </section>
-
-    <VibzHero v-if="weeklyTop?.getListMusic()[0]" :music="weeklyTop.getListMusic()[0]" />
+    <!--LireMusic() change une variable bool pour lecteurAudio -->
+    <VibzHero v-if="weeklyTop?.getListMusic()[0]" :music="weeklyTop.getListMusic()[0]" @LireMusic="LireMusic()" />
 
     <div class="max-w-[1100px] mx-auto my-[80px] px-[5%]">
       
@@ -75,12 +87,13 @@ InitWeeklyTop();
               <th class="px-[20px] py-[12px] font-semibold">Date de sortie</th>
             </tr>
           </thead>
-          
-          <VibzHitsTable v-if="weeklyTop?.getListMusic()" :musics="weeklyTop.getListMusic()" />
+
+          <VibzHitsTable v-if="weeklyTop?.getListMusic()" :musics="weeklyTop.getListMusic()" @LireMusicParIndex="(index) => LireMusicParIndex(index)" />
         </table>
       </div>
     </div>
   </div>
+  <LecteurAudio v-if="LecteurAudioVisible" :ListeMusic="weeklyTop.getListMusic()" :IndexMusic="indexDeLaMusic" /> <!--LireMusic() change une variable bool pour lecteurAudio -->
 </template>
 
 <style scoped>
