@@ -6,6 +6,7 @@ import UserServices from "@/Services/UserServices";
   
 const router = useRouter();
 
+
 const goToHome = () => {
   router.push('/');
 };
@@ -45,10 +46,9 @@ async function Redirection() {
 
     <nav class="vibz-nav">
       <button>Favoris</button>
-      <button>Profil</button>
-      <button @click="goToArtist">Artiste</button>
       <button @click="Redirection()">{{name}}</button>
-      <button>Artiste</button>
+      <button @click="goToArtist">Artiste</button>
+
     </nav>
   </header>
 </template>
