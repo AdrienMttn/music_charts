@@ -8,6 +8,7 @@ import {
   GetAudioUrl,
   GetWeeklyTop,
   GetAllArtists,
+  GetArtistsByName,
 } from "./controller/music.controller.js";
 
 
@@ -43,6 +44,7 @@ app.post("/Logout", Logout);
 app.post("/AddRemoveFavorite", AddRemoveFavorite);
 
 app.post("/GetArtist", GetArtist);
+app.post("/GetArtistsByName", GetArtistsByName);
 app.get("/GetAllArtists", GetAllArtists);
 app.post("/GetAudioUrl", GetAudioUrl);
 app.listen(3000, () => {

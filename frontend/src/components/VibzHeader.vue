@@ -1,13 +1,26 @@
+<script setup lang="ts">
+import { useRouter } from 'vue-router';
+const router = useRouter();
+
+const goToHome = () => {
+  router.push('/');
+};
+
+const goToArtist = () => {
+  router.push('/artist');
+};
+</script>
+
 <template>
   <header class="vibz-header">
     <div class="vibz-logo">
-      <button class="vibz-nom">Vibz</button>
+      <button class="vibz-nom" @click="goToHome">Vibz</button>
     </div>
 
     <nav class="vibz-nav">
       <button>Favoris</button>
       <button>Profil</button>
-      <button>Artiste</button>
+      <button @click="goToArtist">Artiste</button>
     </nav>
   </header>
 </template>
