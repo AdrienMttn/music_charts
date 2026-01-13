@@ -2,7 +2,9 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import UserServices from "@/Services/UserServices";
+import { UserStore } from "@/stores/user";
 const router = useRouter();
+const userStore = UserStore();
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 // 1. Un objet réactif pour les données du formulaire
@@ -45,6 +47,8 @@ async function VerifLogin() {
   const res = await UserServices.Login(form.value.email, form.value.password);
 
   if (res.message == "Connexion réussie") {
+    // Mettre à jour le store après connexion
+    await userStore.initUser();
     // Rediriger vers la page précédente
     router.back();
   } else {
@@ -113,7 +117,7 @@ async function VerifLogin() {
 
       <button
         class="font-bold pt-4 hover:text-gray-600"
-        @click="router.push('/register')"
+        @click="router.push('/registration')"
       >
         Pas de compte ? S'inscrire
       </button>

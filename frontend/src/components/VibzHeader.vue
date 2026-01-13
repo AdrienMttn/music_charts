@@ -1,3 +1,32 @@
+<script setup lang="ts">
+import { onMounted, computed } from "vue";
+import { UserStore } from "@/stores/user";
+import UserServices from "@/Services/UserServices";
+import router from "@/router";
+
+const userStore = UserStore();
+
+onMounted(async () => {
+  try {
+    await userStore.initUser();
+  } catch (err) {
+    console.error("Failed to init user", err);
+  }
+});
+
+const name = computed(() => {
+  return userStore.isLogin ? "Profil" : "Connexion";
+});
+
+async function Redirection() {
+  if (userStore.isLogin) {
+    router.push('/profil');
+  } else {
+    router.push('/login');
+  }
+}
+</script>
+
 <template>
   <header class="vibz-header">
     <div class="vibz-logo">
@@ -6,7 +35,7 @@
 
     <nav class="vibz-nav">
       <button>Favoris</button>
-      <button>Profil</button>
+      <button @click="Redirection()">{{name}}</button>
       <button>Artiste</button>
     </nav>
   </header>
