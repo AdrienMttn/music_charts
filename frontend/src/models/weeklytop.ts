@@ -21,5 +21,6 @@ export class WeeklyTop{
     getWeekDate(): string {
         return this.weekDate;
     }
+    
     //#endregion
 }
