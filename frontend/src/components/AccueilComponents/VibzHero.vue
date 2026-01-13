@@ -32,8 +32,8 @@ async function Redirection() {
       </section>
       
       <div class="vibz-buttons-hero">
-        <button class="btn-styled">▶ Lecture</button>
-        <button class="btn-styled" @click="Redirection()">{{name}}</button>
+        <button class="btn-styled" @click="$emit('LireMusic')" >Lecture</button>
+        <button class="btn-styled">Connexion</button>
       </div>
     </div>
 
