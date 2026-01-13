@@ -79,7 +79,7 @@ async function VerifLogin() {
         v-model="form.email"
         type="text"
         :class="[
-          'bg-gray-300 rounded-md p-1 w-full border-2',
+          'text-gray-800 bg-gray-300 rounded-md p-1 w-full border-2',
           errors.email ? 'border-red-600 mb-1' : 'mb-4 border-transparent',
         ]"
       />
@@ -95,7 +95,7 @@ async function VerifLogin() {
         v-model="form.password"
         type="password"
         :class="[
-          'bg-gray-300 rounded-md p-1 w-full border-2',
+          'text-gray-800 bg-gray-300 rounded-md p-1 w-full border-2',
           errors.password ? 'border-red-600 mb-1' : 'mb-4 border-transparent',
         ]"
       />
@@ -116,7 +116,7 @@ async function VerifLogin() {
       </div>
 
       <button
-        class="font-bold pt-4 hover:text-gray-600"
+        class="font-bold pt-4 text-gray-800 hover:text-gray-600"
         @click="router.push('/registration')"
       >
         Pas de compte ? S'inscrire
