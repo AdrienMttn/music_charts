@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
+import { onMounted, computed } from "vue";
+import { UserStore } from "@/stores/user";
+import UserServices from "@/Services/UserServices";
+  
 const router = useRouter();
 
 const goToHome = () => {
@@ -9,6 +13,28 @@ const goToHome = () => {
 const goToArtist = () => {
   router.push('/artist');
 };
+
+const userStore = UserStore();
+
+onMounted(async () => {
+  try {
+    await userStore.initUser();
+  } catch (err) {
+    console.error("Failed to init user", err);
+  }
+});
+
+const name = computed(() => {
+  return userStore.isLogin ? "Profil" : "Connexion";
+});
+
+async function Redirection() {
+  if (userStore.isLogin) {
+    router.push('/profil');
+  } else {
+    router.push('/login');
+  }
+}
 </script>
 
 <template>
@@ -21,6 +47,8 @@ const goToArtist = () => {
       <button>Favoris</button>
       <button>Profil</button>
       <button @click="goToArtist">Artiste</button>
+      <button @click="Redirection()">{{name}}</button>
+      <button>Artiste</button>
     </nav>
   </header>
 </template>

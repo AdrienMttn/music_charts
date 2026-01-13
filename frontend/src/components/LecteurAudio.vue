@@ -1,57 +1,34 @@
 <script setup lang="ts">
 import { Music } from '@/models/music';
 import MusicServices from '@/Services/MusicServices';
-import { Album } from '@/models/album';
-import { Artist } from '@/models/artist';
-import { Ref, ref } from 'vue';
+import { Ref, ref, watch } from 'vue';
 
-const listMusic: Ref<Music[]> = ref([]);
-const indexMusic = ref(0);
+
+
 const laMusic: Ref<Music | undefined> = ref(undefined);
 const AudioLink = ref<any | undefined>(undefined);
 
 // État du lecteur
 const audioRef = ref<HTMLAudioElement | null>(null); // Référence à l'élément audio
-const isPlaying = ref(false); // État de lecture
+const isPlaying = ref(true); // État de lecture
 const currentTime = ref(0); // Temps actuel
 const duration = ref(0); // Durée totale
 
 // Récupération des données musicales
-async function GetTop() {
-  const data = await MusicServices.GetWeeklyTop("2026-01-05","PL4fGSI1pDJn7bK3y1Hx-qpHBqfr6cesNs");
-  listMusic.value = data.Classement.map((UneMusic: any) => (
-      new Music(
-        UneMusic.id,
-        UneMusic.titre,
-        new Album(
-          UneMusic.album.id,
-          UneMusic.album.titreAlbum,
-          UneMusic.album.CoverUrl,
-          UneMusic.album.ReleaseYear,
-          // Assuming artist data is available in UneMusic.album.artist
-          new Artist(
-            UneMusic.album.artist.id,
-            UneMusic.album.artist.name,
-            UneMusic.album.artist.imageUrl,
-            UneMusic.album.artist.description
-          )
-        ),
-        UneMusic.rang,
-        UneMusic.rangPrecedent,        
-      )
-  ));
-  GetMusic();
-}
-async function GetMusic(){
-  laMusic.value = listMusic.value[indexMusic.value];
+const props = defineProps<{ ListeMusic: Music[], IndexMusic: number | undefined }>();
+const indexMusic: Ref<number> = ref(props.IndexMusic || 0);
+GetMusic();
+
+
+watch(()=> props.IndexMusic, () => {indexMusic.value = props.IndexMusic || 0; GetMusic();});
+
+function GetMusic(){
+  laMusic.value = props.ListeMusic[indexMusic.value];
   GetAudio();
 }
 async function GetAudio() {
-
   AudioLink.value = await MusicServices.GetAudioUrl(laMusic.value?.getId() || '');
 }
-GetTop();
-;
  
 
 // Lecture/Pause
@@ -106,14 +83,16 @@ function backward() {
 
 // Piste suivante 
 async function nextTrack() {
-  indexMusic.value = (indexMusic.value + 1) % listMusic.value.length;
-  await GetMusic();
+  indexMusic.value = (indexMusic.value + 1) % props.ListeMusic.length;
+  GetMusic();
+  console.log("Index musique suivant : " + indexMusic.value);
 }
 
 // Piste précédente 
 async function previousTrack() {
-  indexMusic.value = (indexMusic.value - 1 + listMusic.value.length) % listMusic.value.length; // Pour gérer le cas où l'index devient négatif
-  await GetMusic();
+  indexMusic.value = (indexMusic.value - 1 + props.ListeMusic.length) % props.ListeMusic.length; // Pour gérer le cas où l'index devient négatif
+  GetMusic();
+  console.log("Index musique précédent : " + indexMusic.value);
 }
 
 // Formater le temps
@@ -126,14 +105,14 @@ function formatTime(time: number): string {
 </script>
 
 <template>
-  <div v-if="listMusic.length > 0 && AudioLink">
+  <div>
     <!-- Lecteur audio fixé en bas -->
-    <div class="fixed bottom-0 left-0 right-0 bg-gray-800 shadow-2xl border-t border-gray-700 z-50">
+    <div class="fixed bottom-0 left-0 right-0 bg-purple/10 backdrop-blur-md border border-white/5 rounded-lg p-6">
       <div class="w-full px-6 py-4">
         <!-- Audio element caché -->
         <audio
           ref="audioRef"
-          :src="AudioLink.Url"
+          :src="AudioLink?.Url"
           @timeupdate="onTimeUpdate"
           @loadedmetadata="onLoadedMetadata" 
           @ended="nextTrack"
@@ -149,7 +128,7 @@ function formatTime(time: number): string {
             :max="duration || 0"
             :value="currentTime"
             @input="seek"
-            class="w-full h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer accent-fuchsia-500"
+            class="w-full h-1 bg-white rounded-lg appearance-none cursor-pointer accent-fuchsia-500"
           />
         </div>
 

@@ -1,7 +1,24 @@
 <script setup lang="ts">
 import { Music } from "@/models/music";
+import { useRouter } from "vue-router";
+import { UserStore } from "@/stores/user";
+import { onMounted, computed } from "vue";
 
 const props = defineProps<{ music: Music }>();
+const userStore = UserStore();
+const router = useRouter();
+
+const name = computed(() => {
+  return userStore.isLogin ? "Profil" : "Connexion";
+});
+
+async function Redirection() {
+  if (userStore.isLogin) {
+    router.push('/profil');
+  } else {
+    router.push('/login');
+  }
+}
 </script>
 
 <template>
@@ -15,7 +32,7 @@ const props = defineProps<{ music: Music }>();
       </section>
       
       <div class="vibz-buttons-hero">
-        <button class="btn-styled">▶ Lecture</button>
+        <button class="btn-styled" @click="$emit('LireMusic')" >Lecture</button>
         <button class="btn-styled">Connexion</button>
       </div>
     </div>
