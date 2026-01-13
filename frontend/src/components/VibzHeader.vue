@@ -1,8 +1,18 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router';
 import { onMounted, computed } from "vue";
 import { UserStore } from "@/stores/user";
 import UserServices from "@/Services/UserServices";
-import router from "@/router";
+  
+const router = useRouter();
+
+const goToHome = () => {
+  router.push('/');
+};
+
+const goToArtist = () => {
+  router.push('/artist');
+};
 
 const userStore = UserStore();
 
@@ -30,11 +40,13 @@ async function Redirection() {
 <template>
   <header class="vibz-header">
     <div class="vibz-logo">
-      <button class="vibz-nom">Vibz</button>
+      <button class="vibz-nom" @click="goToHome">Vibz</button>
     </div>
 
     <nav class="vibz-nav">
       <button>Favoris</button>
+      <button>Profil</button>
+      <button @click="goToArtist">Artiste</button>
       <button @click="Redirection()">{{name}}</button>
       <button>Artiste</button>
     </nav>
