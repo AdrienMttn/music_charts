@@ -48,7 +48,8 @@ export async function CreateUser(req, res) {
     req.session.user = {
       mail: userRow.mail,
       username: userRow.username,
-      description: userRow.description
+      description: userRow.description,
+      nbMusicListen: 0
     };
     
     return res.json({ message: 'Utilisateur créé', user: req.session.user });
@@ -90,7 +91,8 @@ export async function Login(req, res) {
     req.session.user = {
       mail: userRow.mail,
       username: userRow.username,
-      description: userRow.description
+      description: userRow.description,
+      nbMusicListen: userRow.nbMusicListen
     };
 
     return res.json({
