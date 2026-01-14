@@ -12,7 +12,7 @@ const props = defineProps<{ music: Music }>();
       
       <section>
         <h1 class="text-white font-medium leading-[1.2] text-left lg:text-left max-lg:text-center text-[clamp(1.2rem,3.5vw,2.5rem)]">
-          Une sensation vibrante du meilleur titre du mois. <br />
+          Une sensation vibrante du meilleur titre de la semaine. <br />
           Laissez-vous emporter par cette mélodie qui définisse la saison !
         </h1>
       </section>

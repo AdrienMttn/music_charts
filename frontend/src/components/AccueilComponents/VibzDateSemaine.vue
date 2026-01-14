@@ -55,7 +55,7 @@ const selectDate = (date: string) => {
       v-if="isOpen"
       class="absolute z-50 w-full mt-2 bg-[#e91e63] border border-white/20 rounded-[24px] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-150"
     >
-      <div class="">
+      <div class=" max-h-60 md:overflow-y-auto [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-thumb]:rounded-full">
         <div 
           v-for="item in availableDates"
           :key="item.dateSemaine"
