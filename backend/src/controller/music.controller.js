@@ -156,3 +156,5 @@ export async function GetArtistsByName (req, res){
     return res.status(500).json({ error: "Failed to fetch artists by name" });
   }
 }
+
+

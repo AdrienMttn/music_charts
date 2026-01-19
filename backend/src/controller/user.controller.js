@@ -139,3 +139,28 @@ export async function AddRemoveFavorite(req, res) { // Ajoute ou supprime un fav
     return res.status(500).json({ error: 'Erreur serveur' });
   }
 }
+
+export async function GetFavoriteByUserId(req, res) {
+    const { mail } = req.body; // Note: Généralement on utilise req.session.user.mail si l'utilisateur est connecté
+    
+    if (!mail) {
+        return res.status(400).json({ error: 'Paramètres manquants' });
+    }
+
+    try {
+        // Exécution de la procédure stockée
+        const [rows] = await connection.execute(
+            'CALL GetFavoriteByUserId(?)',
+            [mail]
+        );
+
+        // rows[0] contient le premier "result set" de la procédure (la liste des favoris)
+        const favorites = rows[0];
+
+        return res.json(favorites);
+
+    } catch (err) {
+        console.error(err); // Utile pour le debug
+        return res.status(500).json({ error: 'Erreur serveur lors de la récupération des favoris' });
+    }
+}
