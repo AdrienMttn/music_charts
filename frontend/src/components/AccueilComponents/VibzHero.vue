@@ -35,8 +35,19 @@ async function Redirection() {
       </section>
       
       <div class="flex gap-5 justify-center-safe">
-        <button class="btn-styled" @click="$emit('LireMusic')" >Lecture</button>
-        <button class="btn-styled" @click="Redirection">{{name}}</button>
+        <button 
+          @click="$emit('LireMusic')" 
+          class="py-[14px] px-[32px] min-w-[160px] rounded-full font-['Montserrat'] font-bold text-[0.9rem] uppercase bg-white/10 text-white border border-white/40 backdrop-blur-[10px] cursor-pointer transition-all duration-300 ease-in-out hover:bg-white hover:text-[#64067C] hover:-translate-y-[3px]"
+        >
+          Lecture
+        </button>
+
+        <button 
+          @click="Redirection" 
+          class="py-[14px] px-[32px] min-w-[160px] rounded-full font-['Montserrat'] font-bold text-[0.9rem] uppercase bg-white/10 text-white border border-white/40 backdrop-blur-[10px] cursor-pointer transition-all duration-300 ease-in-out hover:bg-white hover:text-[#64067C] hover:-translate-y-[3px]"
+        >
+          {{name}}
+        </button>
       </div>
     </div>
 
@@ -49,28 +60,3 @@ async function Redirection() {
     </div>
   </div>
 </template>
-
-<style scoped>
-/* On garde exactement ton style de bouton complexe ici pour ne pas le dénaturer */
-.btn-styled {
-  padding: 14px 32px;
-  min-width: 160px;
-  border-radius: 50px;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  background: rgba(255, 255, 255, 0.1); 
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(10px);
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.btn-styled:hover {
-  background: white;
-  color: #64067C;
-  transform: translateY(-3px);
-}
-</style>

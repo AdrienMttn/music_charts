@@ -14,7 +14,6 @@ export async function GetDateWeek(req, res)
       dateSemaine: item.weekDate 
     }));
 
-    console.log("Dates envoyées au front :", DateWeek); 
     return res.json(DateWeek);
   }
   catch (err) {
