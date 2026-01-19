@@ -40,14 +40,31 @@ async function Redirection() {
   <header
     class="w-full flex flex-col sm:flex-row justify-between items-center py-5 px-[5%] box-border text-white gap-[15px] sm:gap-0"
   >
-    <div class="vibz-logo">
-      <button class="vibz-nom" @click="goToHome">Vibz</button>
+    <div class="p-0 font-inherit">
+      <button 
+        class="bg-none border-none text-white text-[1.8rem] font-bold tracking-[3px] cursor-pointer transition-all duration-300 hover:text-[#FFD6F0]" 
+        @click="goToHome"
+      >
+        Vibz
+      </button>
     </div>
 
-    <nav class="vibz-nav">
-      <button>Favoris</button>
-      <button @click="Redirection()">{{ name }}</button>
-      <button @click="goToArtist">Artiste</button>
+    <nav class="flex flex-row items-center justify-center w-full sm:w-auto gap-[20px] md:gap-[50px] lg:gap-[clamp(20px,10vw,150px)]">
+      <button class="bg-none border-none text-white text-[0.9rem] sm:text-[1.8rem] font-semibold cursor-pointer transition-all duration-300 whitespace-nowrap hover:text-[#FFD6F0]">
+        Favoris
+      </button>
+      <button 
+        @click="Redirection()" 
+        class="bg-none border-none text-white text-[0.9rem] sm:text-[1.8rem] font-semibold cursor-pointer transition-all duration-300 whitespace-nowrap hover:text-[#FFD6F0]"
+      >
+        {{ name }}
+      </button>
+      <button 
+        @click="goToArtist" 
+        class="bg-none border-none text-white text-[0.9rem] sm:text-[1.8rem] font-semibold cursor-pointer transition-all duration-300 whitespace-nowrap hover:text-[#FFD6F0]"
+      >
+        Artiste
+      </button>
     </nav>
   </header>
 </template>
