@@ -2,24 +2,36 @@
 import VibzHero from "@/components/AccueilComponents/VibzHero.vue"; 
 import VibzHitsTable from "@/components/AccueilComponents/VibzHitsTable.vue";
 import { WeeklyTop } from "@/models/weeklytop";
-import { ref, type Ref } from "vue";
+import { ref, type Ref, onMounted } from "vue";
 import MusicServices from "@/Services/MusicServices";
 import { Music } from "@/models/music";
 import { Album } from "@/models/album";
 import { Artist } from "@/models/artist";
+import VibzDateSemaine from "@/components/AccueilComponents/VibzDateSemaine.vue";
 import LecteurAudio from "@/components/LecteurAudio.vue";
 
-
-
 const weeklyTop : Ref<WeeklyTop | null>= ref(null);
-const indexDeLaMusic: Ref<number> = ref(0);
-async function InitWeeklyTop() {
-  const res = await MusicServices.GetWeeklyTop("2025-11-25","PL4fGSI1pDJn7bK3y1Hx-qpHBqfr6cesNs");
+
+const allWeeks = ref<any[]>([]); 
+
+async function InitWeeklyTop(p_date?: string) {
+  const countryId = "PL4fGSI1pDJn7bK3y1Hx-qpHBqfr6cesNs"; 
+
+  if (allWeeks.value.length === 0) {
+    const dates = await MusicServices.GetDateWeek();
+    allWeeks.value = dates;
+  }
+
+  const targetDate = p_date ? p_date : (allWeeks.value[0]?.dateSemaine || "2026-01-12");
+
+  if (!targetDate) return; // Sécurité si aucune date n'existe en base
+
+  const res = await MusicServices.GetWeeklyTop(targetDate, countryId);
   
-  const listMusic: Music[] = res.Classement.map((music:any) => {
+  const listMusic: Music[] = res.Classement.map((music: any) => {
     return new Music(
       music.id,
-      music.titre,
+      music.titre,  
       new Album(
         music.album.id,
         music.album.titreAlbum,
@@ -35,13 +47,9 @@ async function InitWeeklyTop() {
       music.rang,
       music.rangPrecedent
     );
-  })
-  weeklyTop.value = new WeeklyTop(
-    listMusic,
-    res.country,
-    res.date
-  );
-  console.log(weeklyTop.value);
+  });
+  
+  weeklyTop.value = new WeeklyTop(listMusic, res.country, res.date);
 }
 InitWeeklyTop();
 const LecteurAudioVisible: Ref<boolean> = ref(false);
@@ -68,23 +76,33 @@ function LireMusicParIndex(index: number) {
     <!--LireMusic() change une variable bool pour lecteurAudio -->
     <VibzHero v-if="weeklyTop?.getListMusic()[0]" :music="weeklyTop.getListMusic()[0]" @LireMusic="LireMusic()" />
 
-    <div class="max-w-[1100px] mx-auto my-[80px] px-[5%]">
+    <div class="max-w-[1100px] mx-auto my-20 px-[5%]">
       
-      <p class="text-white text-[1.4rem] mb-[25px]">
-        Top 20 Hits <br/> 
-        <strong class="font-bold">Voici le top 20 de la semaine : </strong>
-      </p>
+      <div class="flex flex-col md:flex-row md:items-baseline justify-between gap-4 mb-6">
+        <p class="text-white text-4xl font-bold">
+          Top hits de la semaine
+        </p>
+        <VibzDateSemaine 
+          v-if="weeklyTop"
+          :weeklyTop="weeklyTop"
+          :availableDates="allWeeks"
+          @change-week="(date) => InitWeeklyTop(date)"
+        />
+      </div>
 
       <div class="w-full">
-        <table class="w-full border-separate border-spacing-y-[10px]">
+        <table class="w-full border-separate border-spacing-y-2.5 
+                      [&_td]:bg-white/5 [&_td]:px-5 [&_td]:py-3 [&_td]:text-white
+                      [&_td:first-child]:rounded-l-xl [&_td:first-child]:font-black
+                      [&_td:last-child]:rounded-r-xl">
           <thead>
             <tr class="text-white text-left">
-              <th class="px-[20px] py-[12px] font-semibold">Rang</th>
-              <th class="px-[20px] py-[12px] font-semibold">Image</th>
-              <th class="px-[20px] py-[12px] font-semibold">Titre</th>
-              <th class="px-[20px] py-[12px] font-semibold">Artiste</th>
-              <th class="px-[20px] py-[12px] font-semibold">Album</th>
-              <th class="px-[20px] py-[12px] font-semibold">Date de sortie</th>
+              <th class="px-5 py-3 font-semibold">Rang</th>
+              <th class="px-5 py-3 font-semibold">Image</th>
+              <th class="px-5 py-3 font-semibold">Titre</th>
+              <th class="px-5 py-3 font-semibold">Artiste</th>
+              <th class="px-5 py-3 font-semibold">Album</th>
+              <th class="px-5 py-3 font-semibold">Date de sortie</th>
             </tr>
           </thead>
 

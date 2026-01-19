@@ -7,6 +7,7 @@ import {
   GetArtist,
   GetAudioUrl,
   GetWeeklyTop,
+  GetDateWeek,
   GetAllArtists,
   GetArtistsByName,
 } from "./controller/music.controller.js";
@@ -47,6 +48,8 @@ app.post("/GetArtist", GetArtist);
 app.post("/GetArtistsByName", GetArtistsByName);
 app.get("/GetAllArtists", GetAllArtists);
 app.post("/GetAudioUrl", GetAudioUrl);
+app.get("/GetDateWeek", GetDateWeek);
+
 app.listen(3000, () => {
   console.log(`Server listening on http://localhost:${3000}`);
 });
