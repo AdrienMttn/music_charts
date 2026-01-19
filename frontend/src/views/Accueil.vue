@@ -11,11 +11,23 @@ import VibzDateSemaine from "@/components/AccueilComponents/VibzDateSemaine.vue"
 
 const weeklyTop : Ref<WeeklyTop | null>= ref(null);
 
-async function InitWeeklyTop(p_date: string = "2025-11-25") {
+const allWeeks = ref<any[]>([]); 
+
+async function InitWeeklyTop(p_date?: string) {
   const countryId = "PL4fGSI1pDJn7bK3y1Hx-qpHBqfr6cesNs"; 
-  const res = await MusicServices.GetWeeklyTop(p_date, countryId);
+
+  if (allWeeks.value.length === 0) {
+    const dates = await MusicServices.GetDateWeek();
+    allWeeks.value = dates;
+  }
+
+  const targetDate = p_date ? p_date : (allWeeks.value[0]?.dateSemaine || "2026-01-12");
+
+  if (!targetDate) return; // Sécurité si aucune date n'existe en base
+
+  const res = await MusicServices.GetWeeklyTop(targetDate, countryId);
   
-  const listMusic: Music[] = res.Classement.map((music:any) => {
+  const listMusic: Music[] = res.Classement.map((music: any) => {
     return new Music(
       music.id,
       music.titre,  
@@ -34,12 +46,13 @@ async function InitWeeklyTop(p_date: string = "2025-11-25") {
       music.rang,
       music.rangPrecedent
     );
-  })
+  });
+  
   weeklyTop.value = new WeeklyTop(listMusic, res.country, res.date);
 }
 
 onMounted(() => {
-  InitWeeklyTop();
+  InitWeeklyTop(); 
 });
 </script>
 
@@ -60,9 +73,10 @@ onMounted(() => {
           Top hits de la semaine
         </p>
         <VibzDateSemaine 
-          v-if="weeklyTop" 
-          :weeklyTop="weeklyTop" 
-          @change-week="(date) => InitWeeklyTop(date)" 
+          v-if="weeklyTop"
+          :weeklyTop="weeklyTop"
+          :availableDates="allWeeks"
+          @change-week="(date) => InitWeeklyTop(date)"
         />
       </div>
 

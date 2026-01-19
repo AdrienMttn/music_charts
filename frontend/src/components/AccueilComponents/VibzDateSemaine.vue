@@ -1,32 +1,24 @@
 <script setup lang="ts">
 import { WeeklyTop } from "@/models/weeklytop";
 import { ref, onMounted } from "vue";
-import MusicServices from "@/Services/MusicServices";
 
-const props = defineProps<{ weeklyTop: WeeklyTop }>();
+
+const props = defineProps<{ weeklyTop: WeeklyTop, availableDates: any[] }>();
 const emit = defineEmits(['changeWeek']);
-
-const availableDates = ref<any[]>([]);
 const isOpen = ref(false);
 
-onMounted(async () => {
-    // Récupère ton tableau [{ dateSemaine: "2026-01-12" }, ...]
-    const res = await MusicServices.GetDateWeek();
-    availableDates.value = res;
-});
-
-/**
- * Transforme "2026-01-12" en "12 Janvier 2026"
- */
-const formatLundi = (dateStr: string) => {
+// met en forme une date "YYYY-MM-DD" en format "DD Month YYYY" en français
+const PremierDate = (dateStr: string) => {
+    if (!dateStr) return "";
     const date = new Date(dateStr);
     return date.toLocaleDateString('fr-FR', { 
         day: '2-digit', 
         month: 'long', 
         year: 'numeric' 
     });
-};
+};;
 
+// Fonction déclenchée quand on choisit une date dans la liste
 const selectDate = (date: string) => {
     emit('changeWeek', date);
     isOpen.value = false;
@@ -40,7 +32,7 @@ const selectDate = (date: string) => {
       class="w-full flex items-center justify-between bg-white/10 border border-white/20 text-white py-2.5 px-6 rounded-full cursor-pointer backdrop-blur-md hover:bg-white/20 transition-all select-none"
     >
       <span class="text-sm font-medium">
-        Semaine du {{ formatLundi(props.weeklyTop.getWeekDate()) }}
+        Semaine du {{ PremierDate(props.weeklyTop.getWeekDate()) }}
       </span>
       <svg 
         class="h-4 w-4 text-[#FFD6F0] transition-transform duration-300" 
@@ -62,7 +54,7 @@ const selectDate = (date: string) => {
           @click="selectDate(item.dateSemaine)"
           class="px-6 py-2.5 text-white hover:bg-white/10 cursor-pointer transition-colors duration-200"
         >
-          Semaine du {{ formatLundi(item.dateSemaine) }}
+          Semaine du {{ PremierDate(item.dateSemaine) }}
         </div>
       </div>
     </div>
