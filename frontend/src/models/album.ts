@@ -11,7 +11,7 @@ export class Album {
     constructor(id: string, title: string, coverUrl: string, releaseYear: number | null, artist: Artist) {
         this.id = id;
         this.title = title;
-        this.coverUrl = coverUrl;
+        this.coverUrl = coverUrl.replace("https://lh3.googleusercontent.com/","https://adrikiwi.freeboxos.fr/invidious/ggpht/");
         this.releaseYear = releaseYear;
         this.artist = artist;
         this.musics = [];

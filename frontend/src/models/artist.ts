@@ -11,7 +11,7 @@ export class Artist {
     constructor(id: string, name: string, imageUrl: string, description: string | undefined ) {
         this.id = id;
         this.name = name;
-        this.imageUrl = imageUrl;
+        this.imageUrl = imageUrl.replace("https://lh3.googleusercontent.com/","https://adrikiwi.freeboxos.fr/invidious/ggpht/");
         this.description = description === "null"? undefined : description;
         this.albums = [];
     }
