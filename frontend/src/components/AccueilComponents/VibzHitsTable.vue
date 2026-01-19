@@ -8,6 +8,6 @@ const props = defineProps<{ musics: Music[] }>();
 
 <template>
   <tbody>
-    <VibzHitsTableLigne v-for="music in props.musics" :key="music.getId()" :music="music" />
+    <VibzHitsTableLigne v-for="(music, indexMusic) in props.musics" :key="music.getId()" :music="music" @click="$emit('LireMusicParIndex', indexMusic)"/>
   </tbody>
 </template>

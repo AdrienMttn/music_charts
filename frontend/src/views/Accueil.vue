@@ -8,6 +8,7 @@ import { Music } from "@/models/music";
 import { Album } from "@/models/album";
 import { Artist } from "@/models/artist";
 import VibzDateSemaine from "@/components/AccueilComponents/VibzDateSemaine.vue";
+import LecteurAudio from "@/components/LecteurAudio.vue";
 
 const weeklyTop : Ref<WeeklyTop | null>= ref(null);
 
@@ -50,21 +51,30 @@ async function InitWeeklyTop(p_date?: string) {
   
   weeklyTop.value = new WeeklyTop(listMusic, res.country, res.date);
 }
+InitWeeklyTop();
+const LecteurAudioVisible: Ref<boolean> = ref(false);
 
-onMounted(() => {
-  InitWeeklyTop(); 
-});
+function LireMusic() {
+  LecteurAudioVisible.value = !LecteurAudioVisible.value;
+  console.log("Lecture de la musique");
+}
+
+function LireMusicParIndex(index: number) {
+  LecteurAudioVisible.value = true;
+  indexDeLaMusic.value = index;
+}
 </script>
 
 <template>
-  <div class="relative w-full overflow-x-hidden">
-    <section class="flex justify-center mt-10">
-      <h1 class="text-white text-center uppercase font-thin tracking-[6px] text-[clamp(6rem,20vw,6rem)]">
+  <div class="relative w-full overflow-x-hidden" :class="LecteurAudioVisible ? 'pb-24' : 'pb-0'">
+
+    <section class="flex justify-center mt-[40px]">
+      <h1 class="text-white text-center uppercase font-thin tracking-[6px] text-[clamp(3rem,15vw,3rem)]">
         VIBZ
       </h1>
     </section>
-
-    <VibzHero v-if="weeklyTop?.getListMusic()[0]" :music="weeklyTop.getListMusic()[0]" />
+    <!--LireMusic() change une variable bool pour lecteurAudio -->
+    <VibzHero v-if="weeklyTop?.getListMusic()[0]" :music="weeklyTop.getListMusic()[0]" @LireMusic="LireMusic()" />
 
     <div class="max-w-[1100px] mx-auto my-20 px-[5%]">
       
@@ -95,10 +105,32 @@ onMounted(() => {
               <th class="px-5 py-3 font-semibold">Date de sortie</th>
             </tr>
           </thead>
-          
-          <VibzHitsTable v-if="weeklyTop?.getListMusic()" :musics="weeklyTop.getListMusic()" />
+
+          <VibzHitsTable v-if="weeklyTop?.getListMusic()" :musics="weeklyTop.getListMusic()" @LireMusicParIndex="(index) => LireMusicParIndex(index)" />
         </table>
       </div>
     </div>
   </div>
+  <LecteurAudio v-if="LecteurAudioVisible" :ListeMusic="weeklyTop.getListMusic()" :IndexMusic="indexDeLaMusic" /> <!--LireMusic() change une variable bool pour lecteurAudio -->
 </template>
+
+<style scoped>
+/*
+  on utilise :deep() pour appliquer tes styles de background et d'arrondi 
+  directement sur les cellules générées par l'enfant.
+*/
+:deep(td) {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 12px 20px;
+  color: white;
+}
+
+:deep(td:first-child) {
+  border-radius: 12px 0 0 12px;
+  font-weight: 900;
+}
+
+:deep(td:last-child) {
+  border-radius: 0 12px 12px 0;
+}
+</style>

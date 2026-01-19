@@ -3,6 +3,8 @@ import accueil from "@/views/Accueil.vue";
 import artist from "@/views/artist.vue";
 import login from "@/views/login.vue";
 import Registration from "@/views/registration.vue";
+import profile from "@/views/profile.vue";
+import ArtistResearch from "@/views/artistResearch.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -17,6 +19,10 @@ const router = createRouter({
       component: artist,
     },
     {
+      path: "/artist",
+      component: ArtistResearch,
+    },
+    {
       path: "/login",
       component: login,
     },
@@ -24,6 +30,10 @@ const router = createRouter({
       path: "/registration",
       component: Registration,
     },
+    {
+    path: "/profile",
+    component: profile,
+    }
   ],
 });
 
