@@ -2,11 +2,12 @@ import express from "express";
 import dotenv from "dotenv";
 import session from "express-session";
 import connection from "./config/bd_cnx.js";
-import { CreateUser, Logout, Login, AddRemoveFavorite } from "./controller/user.controller.js";
+import { CreateUser, Logout, Login, AddRemoveFavorite,GetFavoriteByUserId } from "./controller/user.controller.js";
 import {
   GetArtist,
   GetAudioUrl,
   GetWeeklyTop,
+  GetDateWeek,
   GetAllArtists,
   GetArtistsByName,
 } from "./controller/music.controller.js";
@@ -42,11 +43,14 @@ app.post("/CreateUser", CreateUser);
 app.post("/Login", Login);
 app.post("/Logout", Logout);
 app.post("/AddRemoveFavorite", AddRemoveFavorite);
+app.post("/GetFavoriteByUserId", GetFavoriteByUserId)
 
 app.post("/GetArtist", GetArtist);
 app.post("/GetArtistsByName", GetArtistsByName);
 app.get("/GetAllArtists", GetAllArtists);
 app.post("/GetAudioUrl", GetAudioUrl);
+app.get("/GetDateWeek", GetDateWeek);
+
 app.listen(3000, () => {
   console.log(`Server listening on http://localhost:${3000}`);
 });

@@ -1,5 +1,28 @@
 import connection from "../config/bd_cnx.js";
 
+export async function GetDateWeek(req, res)
+// Récupère les dates des lundis disponibles pour le classement hebdomadaire
+{
+  try {
+    const [rows] = await connection.execute(
+      'call GetDateWeek()'
+    );
+
+    
+    const DateWeek = rows[0].map((item) => ({
+      
+      dateSemaine: item.weekDate 
+    }));
+
+    return res.json(DateWeek);
+  }
+  catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Failed to fetch date week data" });
+  }
+}
+
+
 export async function GetWeeklyTop(req, res) {
   // Récupère le top de la semaine (attend une date et un pays)
   try {
@@ -156,3 +179,5 @@ export async function GetArtistsByName (req, res){
     return res.status(500).json({ error: "Failed to fetch artists by name" });
   }
 }
+
+
