@@ -31,7 +31,7 @@ const name = computed(() => {
 
 async function Redirection() {
   if (userStore.isLogin) {
-    router.push('/profil');
+    router.push('/profile');
   } else {
     router.push('/login');
   }

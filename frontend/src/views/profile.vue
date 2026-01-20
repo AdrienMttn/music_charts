@@ -1,23 +1,13 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
-import { storeToRefs } from "pinia";
 import { UserStore } from "@/stores/user"; 
-import { User } from "@/models/user";
 
 const userStore = UserStore();
-
-// refs réactifs
-const { user, isLogin } = storeToRefs(userStore);
-
-onMounted(async () => {
-  await userStore.initUser();
-});
 </script>
 
 
 <template>
   <div
-    v-if="isLogin && user"
+    v-if="userStore.user"
     class="flex flex-col min-h-screen p-4 md:p-6 lg:p-8"
   >
 
@@ -30,7 +20,7 @@ onMounted(async () => {
         <div
           class="flex h-20 w-20 md:h-24 md:w-24 items-center justify-center rounded-full bg-white/40 text-xs md:text-sm font-bold text-center px-2"
         >
-          {{ user.getUsername }}
+
         </div>
 
         <!-- Top music (inchangé) -->
@@ -45,7 +35,7 @@ onMounted(async () => {
       <div
         class="mt-4 inline-block rounded-full bg-white/20 px-6 py-2 font-semibold text-sm md:text-base"
       >
-        {{ user.getDescription || "Aucune description" }}
+        {{ userStore.user.getDescription() || "Aucune description" }}
       </div>
     </div>
 
@@ -53,12 +43,12 @@ onMounted(async () => {
     <div class="mt-5 flex justify-around">
       <!-- Username -->
       <div class="h-20 w-20 rounded-full bg-white/20 flex items-center justify-center text-center text-xs font-bold px-2">
-        {{ user.getUsername }}
+        {{ userStore.user.getUsername() }}
       </div>
 
       <!-- Nb musiques écoutées -->
       <div class="h-20 w-20 rounded-full bg-white/20 flex items-center justify-center font-bold">
-        🎵 {{ user.getNbMusicListen }}
+        🎵 {{ userStore.user.getNbMusicListen() }}
       </div>
 
       <!-- Likes (pas encore branché) -->
