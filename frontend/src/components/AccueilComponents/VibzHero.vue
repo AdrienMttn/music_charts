@@ -34,21 +34,22 @@ async function Redirection() {
         </h1>
       </section>
       
-      <div class="flex gap-5 justify-center-safe">
-        <button 
-          @click="$emit('LireMusic')" 
-          class="py-[14px] px-[32px] min-w-[160px] rounded-full font-['Montserrat'] font-bold text-[0.9rem] uppercase bg-white/10 text-white border border-white/40 backdrop-blur-[10px] cursor-pointer transition-all duration-300 ease-in-out hover:bg-white hover:text-[#64067C] hover:-translate-y-[3px]"
-        >
-          Lecture
-        </button>
+  <div class="flex gap-5 justify-center-safe">
+    <button 
+      @click="$emit('LireMusic')" 
+      class="py-[14px] px-[32px] min-w-[160px] rounded-[50px] font-['Montserrat',sans-serif] font-bold text-[0.9rem] uppercase bg-[rgba(255,255,255,0.1)] text-white border border-[rgba(255,255,255,0.4)] backdrop-blur-[10px] cursor-pointer transition-all duration-300 ease-out hover:bg-white hover:text-[#64067C] hover:-translate-y-[3px]"
+    >
+      Lecture
+    </button>
 
-        <button 
-          @click="Redirection" 
-          class="py-[14px] px-[32px] min-w-[160px] rounded-full font-['Montserrat'] font-bold text-[0.9rem] uppercase bg-white/10 text-white border border-white/40 backdrop-blur-[10px] cursor-pointer transition-all duration-300 ease-in-out hover:bg-white hover:text-[#64067C] hover:-translate-y-[3px]"
-        >
-          {{name}}
-        </button>
-      </div>
+    <button 
+      @click="Redirection" 
+      class="py-[14px] px-[32px] min-w-[160px] rounded-[50px] font-['Montserrat',sans-serif] font-bold text-[0.9rem] uppercase bg-[rgba(255,255,255,0.1)] text-white border border-[rgba(255,255,255,0.4)] backdrop-blur-[10px] cursor-pointer transition-all duration-300 ease-out hover:bg-white hover:text-[#64067C] hover:-translate-y-[3px]"
+    >
+      {{name}}
+    </button>
+  </div>
+  
     </div>
 
     <div class="flex-[0.8] flex justify-center items-center w-full">
