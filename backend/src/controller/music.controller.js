@@ -1,27 +1,20 @@
 import connection from "../config/bd_cnx.js";
 
-export async function GetDateWeek(req, res)
-// Récupère les dates des lundis disponibles pour le classement hebdomadaire
-{
+export async function GetDateWeek(req, res) {
+  // Récupère les dates des lundis disponibles pour le classement hebdomadaire
   try {
-    const [rows] = await connection.execute(
-      'call GetDateWeek()'
-    );
+    const [rows] = await connection.execute("call GetDateWeek()");
 
-    
     const DateWeek = rows[0].map((item) => ({
-      
-      dateSemaine: item.weekDate 
+      dateSemaine: item.weekDate,
     }));
 
     return res.json(DateWeek);
-  }
-  catch (err) {
+  } catch (err) {
     console.error(err);
     return res.status(500).json({ error: "Failed to fetch date week data" });
   }
 }
-
 
 export async function GetWeeklyTop(req, res) {
   // Récupère le top de la semaine (attend une date et un pays)
@@ -31,32 +24,32 @@ export async function GetWeeklyTop(req, res) {
       throw new Error("Missing date or country parameter");
     }
 
-    const [rows] = await connection.execute(
-      'call GetWeeklyTop (?, ?)',
-      [date, country]
-    );
+    const [rows] = await connection.execute("call GetWeeklyTop (?, ?)", [
+      date,
+      country,
+    ]);
     const Classement = rows[0].map((item) => ({
-        id : item.MusicId, 
-        titre : item.TitreMusic, 
-        rang : item.rank , 
-        rangPrecedent : item.previousRank,
-        album : { 
-          id : item.AlbumId, 
-          CoverUrl : item.CouvertureAlbum, 
-          RealeaseYear : item.realeaseYear, 
-          titreAlbum : item.TitreAlbum,
-          artist : { 
-            id : item.IdArtist, 
-            name : item.nomArtist, 
-            imageUrl : item.ImageArtist, 
-            description : item.description
-          } 
+      id: item.MusicId,
+      titre: item.TitreMusic,
+      rang: item.rank,
+      rangPrecedent: item.previousRank,
+      album: {
+        id: item.AlbumId,
+        CoverUrl: item.CouvertureAlbum,
+        RealeaseYear: item.realeaseYear,
+        titreAlbum: item.TitreAlbum,
+        artist: {
+          id: item.IdArtist,
+          name: item.nomArtist,
+          imageUrl: item.ImageArtist,
+          description: item.description,
         },
-  }));
+      },
+    }));
     const WeeklyTop = {
       country: country,
       date: date,
-      Classement
+      Classement,
     };
     return res.json(WeeklyTop);
   } catch (err) {
@@ -74,49 +67,49 @@ export async function GetArtist(req, res) {
 
     const [rows] = await connection.execute(
       // Exécute la requête SQL pour récupérer les infos de l'artiste
-      'call GetArtist (?)', // Appelle la procédure stockée GetArtist avec un paramètre
-      [artistId] // Utilise l'id artiste comme paramètre de la requête SQL
+      "call GetArtist (?)", // Appelle la procédure stockée GetArtist avec un paramètre
+      [artistId], // Utilise l'id artiste comme paramètre de la requête SQL
     );
     //CRÉER LE TABLEAU DES MUSIQUES
-    // rows[0] contient toutes les lignes retournées par la procédure SQL 
+    // rows[0] contient toutes les lignes retournées par la procédure SQL
     // .map() parcourt CHAQUE ligne et transforme les données
     // Résultat : Un tableau avec 4 objets Music, un pour chaque musique
     //EXTRAIRE LES IDs UNIQUES DES ALBUMS
     // rows[0].map(item => item.AlbumId) → Crée un tableau avec TOUS les AlbumId [X, X, Y, Y]
     // new Set(...) → Élimine les doublons et garde seulement les valeurs uniques [X, Y]
-    // [...new Set(...)] → Convertit le Set en tableau normal    
-const albumIds = [...new Set(rows[0].map(item => item.AlbumId))];
+    // [...new Set(...)] → Convertit le Set en tableau normal
+    const albumIds = [...new Set(rows[0].map((item) => item.AlbumId))];
 
-//CRÉER LE TABLEAU DES ALBUMS SANS DOUBLONS
-// Pour chaque albumId unique,creation d'un objet album
-const Albums = albumIds.map(albumId => {
-      const albumData = rows[0].find(row => row.AlbumId === albumId);
-      const Musics = rows[0].filter(row => row.AlbumId === albumId).map(row => ({
-        id: row.MusicId,
-        titre: row.TitreMusic
-      }));
+    //CRÉER LE TABLEAU DES ALBUMS SANS DOUBLONS
+    // Pour chaque albumId unique,creation d'un objet album
+    const Albums = albumIds.map((albumId) => {
+      const albumData = rows[0].find((row) => row.AlbumId === albumId);
+      const Musics = rows[0]
+        .filter((row) => row.AlbumId === albumId)
+        .map((row) => ({
+          id: row.MusicId,
+          titre: row.TitreMusic,
+        }));
       return {
-        id : albumData.AlbumId,
-        titreAlbum : albumData.TitreAlbum,
-        CoverUrl : albumData.CouvertureAlbum,
-        RealeaseYear : albumData.realeaseYear,
-        Musics
+        id: albumData.AlbumId,
+        titreAlbum: albumData.TitreAlbum,
+        CoverUrl: albumData.CouvertureAlbum,
+        RealeaseYear: albumData.realeaseYear,
+        Musics,
       };
-    }
-);
-//RÉCUPÉRER LES INFOS DE L'ARTISTE
+    });
+    //RÉCUPÉRER LES INFOS DE L'ARTISTE
     const artistInfo = rows[0][0]; // Récupère les infos de l'artiste depuis la première ligne du résultat
     // Construction de l'objet JSON final
     const json = {
-      artist : {
-        id : artistInfo.IdArtist,
-        name : artistInfo.nomArtist,
-        imageUrl : artistInfo.ImageArtist,
-        description : artistInfo.description,
-          Albums,   
-      }
-    }
-; 
+      artist: {
+        id: artistInfo.IdArtist,
+        name: artistInfo.nomArtist,
+        imageUrl: artistInfo.ImageArtist,
+        description: artistInfo.description,
+        Albums,
+      },
+    };
     return res.json(json); // Renvoie les infos de l'artiste au format JSON
   } catch (err) {
     return res.status(500).json({ error: "Failed to fetch artist data" });
@@ -131,53 +124,49 @@ export async function GetAudioUrl(req, res) {
       throw new Error("Missing youtubeId parameter"); // Lance une erreur si l'id youtube est manquant
     }
     const result = await fetch(
-      `https://adrikiwi.freeboxos.fr/invidious/api/v1/videos/${youtubeId}?local=true` // Requête à l'API Invidious pour récupérer les infos de la vidéo
+      `${process.env.INVIDIOUS_URL}/api/v1/videos/${youtubeId}?local=true`, // Requête à l'API Invidious pour récupérer les infos de la vidéo
     );
     const data = await result.json(); // Parse la réponse JSON de l'API
-    const audioUrl = `https://adrikiwi.freeboxos.fr/invidious/${data.adaptiveFormats[0].url}`; // Récupère l'URL de l'audio depuis les formats adaptatifs
+    const audioUrl = `${process.env.INVIDIOUS_URL}/${data.adaptiveFormats[0].url}`; // Récupère l'URL de l'audio depuis les formats adaptatifs
+    console.log("Audio URL:", audioUrl); // Affiche l'URL de l'audio dans la console pour vérification
     return res.json({ Url: audioUrl }); // Renvoie l'URL de l'audio au format JSON
   } catch (err) {
     return res.status(500).json({ error: "Failed to fetch audio URL" });
   }
 }
 
-export async function GetAllArtists (req, res){
+export async function GetAllArtists(req, res) {
   try {
-    const [rows] = await connection.execute(
-      'call GetAllArtists ()'
-    );
+    const [rows] = await connection.execute("call GetAllArtists ()");
     const artists = rows[0].map((item) => ({
-        id : item.id, 
-        name : item.name, 
-        imageUrl : item.imageUrl, 
-        description : item.description
-  }));
+      id: item.id,
+      name: item.name,
+      imageUrl: item.imageUrl,
+      description: item.description,
+    }));
     return res.json({ artists });
   } catch (err) {
-    console.error('Error in GetAllArtists:', err);
+    console.error("Error in GetAllArtists:", err);
     return res.status(500).json({ error: "Failed to fetch all artists" });
   }
 }
-export async function GetArtistsByName (req, res){
+export async function GetArtistsByName(req, res) {
   try {
-    const { artistName } = req.body; 
+    const { artistName } = req.body;
     if (!artistName) {
-      throw new Error("Missing artistName parameter"); 
+      throw new Error("Missing artistName parameter");
     }
-    const [rows] = await connection.execute(
-      'call GetArtistsByName (?)', 
-      [artistName]
-    );
+    const [rows] = await connection.execute("call GetArtistsByName (?)", [
+      artistName,
+    ]);
     const artists = rows[0].map((item) => ({
-        id : item.id, 
-        name : item.name, 
-        imageUrl : item.imageUrl, 
-        description : item.description
-  }));
+      id: item.id,
+      name: item.name,
+      imageUrl: item.imageUrl,
+      description: item.description,
+    }));
     return res.json({ artists });
   } catch (err) {
     return res.status(500).json({ error: "Failed to fetch artists by name" });
   }
 }
-
-

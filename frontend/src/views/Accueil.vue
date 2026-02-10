@@ -73,13 +73,6 @@ function LireMusicParIndex(index: number) {
     class="relative w-full overflow-x-hidden"
     :class="LecteurAudioVisible ? 'pb-24' : 'pb-0'"
   >
-    <section class="flex justify-center mt-[40px]">
-      <h1
-        class="text-white text-center uppercase font-thin tracking-[6px] text-[clamp(3rem,15vw,3rem)]"
-      >
-        VIBZ
-      </h1>
-    </section>
     <!--LireMusic() change une variable bool pour lecteurAudio -->
     <VibzHero
       v-if="weeklyTop?.getListMusic()[0]"
@@ -118,7 +111,7 @@ function LireMusicParIndex(index: number) {
           <VibzHitsTable
             v-if="weeklyTop?.getListMusic()"
             :musics="weeklyTop.getListMusic()"
-            @LireMusicParIndex="(index) => LireMusicParIndex(index)"
+            @LireMusicParIndex="(index: number) => LireMusicParIndex(index)"
           />
         </table>
       </div>

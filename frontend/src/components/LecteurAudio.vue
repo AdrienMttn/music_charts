@@ -1,40 +1,49 @@
 <script setup lang="ts">
-import { Music } from '@/models/music';
-import MusicServices from '@/Services/MusicServices';
-import { Ref, ref, watch } from 'vue';
-
-
+import { Music } from "@/models/music";
+import MusicServices from "@/Services/MusicServices";
+import { type Ref, ref, watch } from "vue";
+import metadataSqueleton from "./LecteurAudioComponents/metadataSqueleton.vue";
 
 const laMusic: Ref<Music | undefined> = ref(undefined);
 const AudioLink = ref<any | undefined>(undefined);
 
 // État du lecteur
+const isLoading = ref(false);
 const audioRef = ref<HTMLAudioElement | null>(null); // Référence à l'élément audio
 const isPlaying = ref(true); // État de lecture
 const currentTime = ref(0); // Temps actuel
 const duration = ref(0); // Durée totale
 
 // Récupération des données musicales
-const props = defineProps<{ ListeMusic: Music[], IndexMusic: number | undefined }>();
+const props = defineProps<{
+  ListeMusic: Music[];
+  IndexMusic: number | undefined;
+}>();
 const indexMusic: Ref<number> = ref(props.IndexMusic || 0);
 GetMusic();
 
+watch(
+  () => props.IndexMusic,
+  () => {
+    indexMusic.value = props.IndexMusic || 0;
+    GetMusic();
+  },
+);
 
-watch(()=> props.IndexMusic, () => {indexMusic.value = props.IndexMusic || 0; GetMusic();});
-
-function GetMusic(){
+function GetMusic() {
   laMusic.value = props.ListeMusic[indexMusic.value];
   GetAudio();
 }
 async function GetAudio() {
-  AudioLink.value = await MusicServices.GetAudioUrl(laMusic.value?.getId() || '');
+  AudioLink.value = await MusicServices.GetAudioUrl(
+    laMusic.value?.getId() || "",
+  );
 }
- 
 
 // Lecture/Pause
-function togglePlay() { 
+function togglePlay() {
   if (!audioRef.value) return;
-  
+
   if (isPlaying.value) {
     audioRef.value.pause();
   } else {
@@ -44,7 +53,7 @@ function togglePlay() {
 }
 
 // Mise à jour du temps
-function onTimeUpdate() { 
+function onTimeUpdate() {
   if (audioRef.value) {
     currentTime.value = audioRef.value.currentTime;
   }
@@ -53,6 +62,7 @@ function onTimeUpdate() {
 // Mise à jour de la durée
 function onLoadedMetadata() {
   if (audioRef.value) {
+    isLoading.value = false;
     duration.value = audioRef.value.duration;
   }
 }
@@ -70,7 +80,10 @@ function seek(e: Event) {
 // Avancer de 10 secondes
 function forward() {
   if (audioRef.value) {
-    audioRef.value.currentTime = Math.min(audioRef.value.currentTime + 10, duration.value);
+    audioRef.value.currentTime = Math.min(
+      audioRef.value.currentTime + 10,
+      duration.value,
+    );
   }
 }
 
@@ -81,40 +94,45 @@ function backward() {
   }
 }
 
-// Piste suivante 
+// Piste suivante
 async function nextTrack() {
+  isLoading.value = true;
   indexMusic.value = (indexMusic.value + 1) % props.ListeMusic.length;
   GetMusic();
   console.log("Index musique suivant : " + indexMusic.value);
 }
 
-// Piste précédente 
+// Piste précédente
 async function previousTrack() {
-  indexMusic.value = (indexMusic.value - 1 + props.ListeMusic.length) % props.ListeMusic.length; // Pour gérer le cas où l'index devient négatif
+  isLoading.value = true;
+  indexMusic.value =
+    (indexMusic.value - 1 + props.ListeMusic.length) % props.ListeMusic.length; // Pour gérer le cas où l'index devient négatif
   GetMusic();
   console.log("Index musique précédent : " + indexMusic.value);
 }
 
 // Formater le temps
 function formatTime(time: number): string {
-  if (isNaN(time)) return '0:00';
+  if (isNaN(time)) return "0:00";
   const mins = Math.floor(time / 60);
   const secs = Math.floor(time % 60);
-  return `${mins}:${secs.toString().padStart(2, '0')}`;
+  return `${mins}:${secs.toString().padStart(2, "0")}`;
 }
 </script>
 
 <template>
   <div>
     <!-- Lecteur audio fixé en bas -->
-    <div class="fixed bottom-0 left-0 right-0 bg-purple/10 backdrop-blur-md border border-white/5 rounded-lg p-6">
+    <div
+      class="fixed bottom-0 left-0 right-0 bg-purple/10 backdrop-blur-md border border-white/5 rounded-lg h-31"
+    >
       <div class="w-full px-6 py-4">
         <!-- Audio element caché -->
         <audio
           ref="audioRef"
           :src="AudioLink?.Url"
           @timeupdate="onTimeUpdate"
-          @loadedmetadata="onLoadedMetadata" 
+          @loadedmetadata="onLoadedMetadata"
           @ended="nextTrack"
           class="hidden"
           autoplay
@@ -135,18 +153,33 @@ function formatTime(time: number): string {
         <!-- Contrôles et infos -->
         <div class="flex items-center justify-between gap-6">
           <!-- Image de la musique -->
-          <div class="w-12 h-12 rounded-lg overflow-hidden"> 
-            <img :src="laMusic.getAlbum().getCoverUrl()" alt="Image de la musique" class="w-full h-full object-cover" />
-          </div>
+          <div v-if="!isLoading" class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-lg overflow-hidden">
+              <img
+                :src="laMusic.getAlbum().getCoverUrl()"
+                alt="Image de la musique"
+                class="w-full h-full object-cover"
+              />
+            </div>
 
-          <!-- Titre de la musique -->
-          <div class="flex-1 min-w-0">
-            <p class="text-white font-semibold truncate">{{ laMusic.getTitle() }}</p>
-            <p class="text-gray-400 text-sm">{{ formatTime(currentTime) }} / {{ formatTime(duration) }}</p>
-            <p class="text-gray-400 text-sm truncate">{{ laMusic.getAlbum().getArtist().getName() }}</p>
-          </div>       
+            <!-- Titre de la musique -->
+            <div class="min-w-0">
+              <p class="text-white font-semibold truncate">
+                {{ laMusic.getTitle() }}
+              </p>
+              <p class="text-gray-400 text-sm">
+                {{ formatTime(currentTime) }} / {{ formatTime(duration) }}
+              </p>
+              <p class="text-gray-400 text-sm truncate">
+                {{ laMusic.getAlbum().getArtist().getName() }}
+              </p>
+            </div>
+          </div>
+          <div v-else class="flex items-center gap-4">
+            <metadataSqueleton />
+          </div>
           <!-- Boutons de contrôle -->
-          <div class="flex items-center gap-3">
+          <div class="absolute flex items-center justify-center gap-3 w-full">
             <!-- Piste précédente -->
             <button
               @click="previousTrack"
@@ -165,20 +198,56 @@ function formatTime(time: number): string {
               title="Reculer 10s"
             >
               <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M11.99 5V1l-5 5 5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6h-2c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8zm-1.1 11h-.85v-3.26l-1.01.31v-.69l1.77-.63h.09V16zm4.28-1.76c0 .32-.03.6-.1.82s-.17.42-.29.57-.28.26-.45.33-.37.1-.59.1-.41-.03-.59-.1-.33-.18-.46-.33-.23-.34-.3-.57-.11-.5-.11-.82v-.74c0-.32.03-.6.1-.82s.17-.42.29-.57.28-.26.45-.33.37-.1.59-.1.41.03.59.1.33.18.46.33.23.34.3.57.11.5.11.82v.74zm-.85-.86c0-.19-.01-.35-.04-.48s-.07-.23-.12-.31-.11-.14-.19-.17-.16-.05-.25-.05-.18.02-.25.05-.14.09-.19.17-.09.18-.12.31-.04.29-.04.48v.97c0 .19.01.35.04.48s.07.24.12.32.11.14.19.17.16.05.25.05.18-.02.25-.05.14-.09.19-.17.09-.19.11-.32.04-.29.04-.48v-.97z" />
+                <path
+                  d="M11.99 5V1l-5 5 5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6h-2c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8zm-1.1 11h-.85v-3.26l-1.01.31v-.69l1.77-.63h.09V16zm4.28-1.76c0 .32-.03.6-.1.82s-.17.42-.29.57-.28.26-.45.33-.37.1-.59.1-.41-.03-.59-.1-.33-.18-.46-.33-.23-.34-.3-.57-.11-.5-.11-.82v-.74c0-.32.03-.6.1-.82s.17-.42.29-.57.28-.26.45-.33.37-.1.59-.1.41.03.59.1.33.18.46.33.23.34.3.57.11.5.11.82v.74zm-.85-.86c0-.19-.01-.35-.04-.48s-.07-.23-.12-.31-.11-.14-.19-.17-.16-.05-.25-.05-.18.02-.25.05-.14.09-.19.17-.09.18-.12.31-.04.29-.04.48v.97c0 .19.01.35.04.48s.07.24.12.32.11.14.19.17.16.05.25.05.18-.02.25-.05.14-.09.19-.17.09-.19.11-.32.04-.29.04-.48v-.97z"
+                />
               </svg>
             </button>
 
             <!-- Play/Pause -->
             <button
+              v-if="!isLoading"
               @click="togglePlay"
               class="w-10 h-10 bg-fuchsia-500 hover:bg-fuchsia-600 rounded-full flex items-center justify-center text-white transition"
             >
-              <svg v-if="audioRef && audioRef.paused" class="w-5 h-5 ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+              <svg
+                v-if="audioRef && audioRef.paused"
+                class="w-5 h-5 ml-0.5"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path d="M8 5v14l11-7z" />
               </svg>
-              <svg v-else class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+              <svg
+                v-else
+                class="w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
                 <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
+              </svg>
+            </button>
+            <button
+              v-else
+              class="w-10 h-10 bg-fuchsia-500 rounded-full flex items-center justify-center text-white cursor-not-allowed"
+              disabled
+            >
+              <svg
+                class="animate-spin"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 22C17.5228 22 22 17.5228 22 12H19C19 15.866 15.866 19 12 19V22Z"
+                  fill="currentColor"
+                />
+                <path
+                  d="M2 12C2 6.47715 6.47715 2 12 2V5C8.13401 5 5 8.13401 5 12H2Z"
+                  fill="currentColor"
+                />
               </svg>
             </button>
 
@@ -189,7 +258,9 @@ function formatTime(time: number): string {
               title="Avancer 10s"
             >
               <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 5V1l5 5-5 5V7c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6h2c0 4.42-3.58 8-8 8s-8-3.58-8-8 3.58-8 8-8zm-.63 11h-.85v-3.26l-1.01.31v-.69l1.77-.63h.09V16zm4.29-1.76c0 .32-.03.6-.1.82s-.17.42-.29.57-.28.26-.45.33-.37.1-.59.1-.41-.03-.59-.1-.33-.18-.46-.33-.23-.34-.3-.57-.11-.5-.11-.82v-.74c0-.32.03-.6.1-.82s.17-.42.29-.57.28-.26.45-.33.37-.1.59-.1.41.03.59.1.33.18.46.33.23.34.3.57.11.5.11.82v.74zm-.85-.86c0-.19-.01-.35-.04-.48s-.07-.23-.12-.31-.11-.14-.19-.17-.16-.05-.25-.05-.18.02-.25.05-.14.09-.19.17-.09.18-.12.31-.04.29-.04.48v.97c0 .19.01.35.04.48s.07.24.12.32.11.14.19.17.16.05.25.05.18-.02.25-.05.14-.09.19-.17.09-.19.11-.32.04-.29.04-.48v-.97z" />
+                <path
+                  d="M12 5V1l5 5-5 5V7c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6h2c0 4.42-3.58 8-8 8s-8-3.58-8-8 3.58-8 8-8zm-.63 11h-.85v-3.26l-1.01.31v-.69l1.77-.63h.09V16zm4.29-1.76c0 .32-.03.6-.1.82s-.17.42-.29.57-.28.26-.45.33-.37.1-.59.1-.41-.03-.59-.1-.33-.18-.46-.33-.23-.34-.3-.57-.11-.5-.11-.82v-.74c0-.32.03-.6.1-.82s.17-.42.29-.57.28-.26.45-.33.37-.1.59-.1.41.03.59.1.33.18.46.33.23.34.3.57.11.5.11.82v.74zm-.85-.86c0-.19-.01-.35-.04-.48s-.07-.23-.12-.31-.11-.14-.19-.17-.16-.05-.25-.05-.18.02-.25.05-.14.09-.19.17-.09.18-.12.31-.04.29-.04.48v.97c0 .19.01.35.04.48s.07.24.12.32.11.14.19.17.16.05.25.05.18-.02.25-.05.14-.09.19-.17.09-.19.11-.32.04-.29.04-.48v-.97z"
+                />
               </svg>
             </button>
 
@@ -204,9 +275,6 @@ function formatTime(time: number): string {
               </svg>
             </button>
           </div>
-
-          <!-- Espace vide pour équilibrer -->
-          <div class="flex-1 min-w-0"></div>
         </div>
       </div>
     </div>
