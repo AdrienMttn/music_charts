@@ -9,7 +9,7 @@
 
 **Découvrez et écoutez le Top 20 des musiques de la semaine sur YouTube !**
 
-[Installation](#-installation) • [Fonctionnalités](#-fonctionnalités) • [Technologies](#-technologies) • [Contributeurs](#-contributeurs)
+[Fonctionnalités](#-fonctionnalités) • [Technologies](#-technologies) • [Contributeurs](#-contributeurs)
 
 </div>
 
@@ -23,102 +23,8 @@
 
 - 🎯 **Top 20 Hebdomadaire** : Consultez le classement des 20 musiques les plus écoutées de la semaine
 - 🎧 **Lecteur Audio Intégré** : Écoutez vos musiques préférées directement depuis l'application
-- 🌍 **Classements Internationaux** : Accédez aux tops de différents pays (Global, France, États-Unis, Italie)
+- 🇫🇷 **Classements Français** : 🇫🇷🇫🇷
 - 📅 **Historique des Semaines** : Explorez les classements des semaines précédentes
-- 🎤 **Pages Artistes** : Découvrez la discographie complète de vos artistes préférés
-- ⭐ **Favoris** : Créez votre propre collection de musiques favorites
-- 👤 **Système de Compte** : Inscription et connexion sécurisées
-- 🔍 **Recherche d'Artistes** : Trouvez facilement vos artistes préférés
-
----
-
-## 🚀 Installation
-
-### Prérequis
-
-Avant de commencer, assurez-vous d'avoir installé :
-
-- **Node.js** (v20.19.0 ou >=22.12.0)
-- **MySQL** (v8.0 ou supérieur)
-- **npm** ou **pnpm**
-
-### Étapes d'installation
-
-1. **Cloner le dépôt**
-   ```bash
-   git clone https://github.com/AdrienMttn/music_charts.git
-   cd music_charts
-   ```
-
-2. **Configurer la base de données**
-   ```bash
-   # Se connecter à MySQL
-   mysql -u root -p
-   
-   # Créer la base de données
-   source BDD/bdd.sql
-   
-   # Optionnel : Importer des données de test
-   source BDD/dump.sql
-   ```
-
-3. **Configurer le Backend**
-   ```bash
-   cd backend
-   npm install
-   
-   # Créer un fichier .env avec vos paramètres MySQL
-   cp .env.example .env
-   # Éditer le fichier .env avec vos identifiants
-   ```
-
-4. **Configurer le Frontend**
-   ```bash
-   cd ../frontend
-   npm install
-   ```
-
-5. **Installer Pinia (gestion d'état)**
-   ```bash
-   cd ..
-   npm install
-   ```
-
----
-
-## 💻 Utilisation
-
-### Démarrer l'application
-
-1. **Lancer le Backend** (dans un terminal)
-   ```bash
-   cd backend
-   npm run dev
-   ```
-   Le serveur API démarrera sur `http://localhost:3000`
-
-2. **Lancer le Frontend** (dans un autre terminal)
-   ```bash
-   cd frontend
-   npm run dev
-   ```
-   L'application web sera accessible sur `http://localhost:5173`
-
-### Développement
-
-- **Backend** : Le serveur utilise `nodemon` pour le rechargement automatique
-- **Frontend** : Vite assure le Hot Module Replacement (HMR) pour un développement rapide
-
-### Build de production
-
-```bash
-# Frontend
-cd frontend
-npm run build
-
-# Le dossier dist/ contiendra les fichiers optimisés pour la production
-```
-
 ---
 
 ## 🛠️ Technologies
@@ -191,56 +97,17 @@ music_charts/
       <a href="https://github.com/AdrienMttn">
         <img src="https://github.com/AdrienMttn.png" width="100px;" alt="Adrien"/>
         <br />
-        <sub><b>Adrien Muttin</b></sub>
+        <sub><b>AdrienMttn</b></sub>
       </a>
-      <br />
-      <sub>Développeur Principal</sub>
     </td>
   </tr>
 </table>
 
 ---
 
-## 📝 API Endpoints
-
-### Musique
-- `POST /GetWeeklyTop` - Récupérer le top hebdomadaire
-- `GET /GetDateWeek` - Obtenir les dates de semaines disponibles
-- `POST /GetArtist` - Récupérer les informations d'un artiste
-- `GET /GetAllArtists` - Liste de tous les artistes
-- `POST /GetArtistsByName` - Rechercher des artistes par nom
-- `POST /GetAudioUrl` - Obtenir l'URL audio d'une musique
-
-### Utilisateur
-- `POST /CreateUser` - Créer un nouveau compte
-- `POST /Login` - Se connecter
-- `POST /Logout` - Se déconnecter
-- `POST /AddRemoveFavorite` - Ajouter/retirer des favoris
-- `POST /GetFavoriteByUserId` - Récupérer les favoris d'un utilisateur
-
----
-
 ## 📄 Licence
 
 Ce projet est un projet personnel open-source.
-
----
-
-## 🤝 Contribution
-
-Les contributions sont les bienvenues ! N'hésitez pas à :
-
-1. Fork le projet
-2. Créer une branche pour votre fonctionnalité (`git checkout -b feature/AmazingFeature`)
-3. Commit vos changements (`git commit -m 'Add some AmazingFeature'`)
-4. Push vers la branche (`git push origin feature/AmazingFeature`)
-5. Ouvrir une Pull Request
-
----
-
-## 📧 Contact
-
-Pour toute question ou suggestion, n'hésitez pas à ouvrir une issue sur GitHub.
 
 ---
 
