@@ -91,7 +91,7 @@ music_charts/
 
 ## 👥 Contributeurs
 
-[![All Contributors](https://img.shields.io/github/contributors/owner/repo)](https://github.com/owner/repo/graphs/contributors)
+[![All Contributors](https://img.shields.io/github/contributors/AdrienMttn/music_charts)](https://github.com/owner/repo/graphs/contributors)
 
 ---
 
