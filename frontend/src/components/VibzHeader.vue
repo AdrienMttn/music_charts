@@ -42,10 +42,20 @@ async function Redirection() {
   >
     <div class="p-0 font-inherit">
       <button
-        class="bg-none border-none text-white text-[1.8rem] font-bold tracking-[3px] cursor-pointer transition-all duration-300 hover:text-[#FFD6F0]"
+        class="bg-none border-none text-white text-[1.8rem] font-bold tracking-[3px] cursor-pointer transition-all duration-300 hover:text-[#FFD6F0] flex items-center"
         @click="goToHome"
       >
-        Vibz
+        <span class="m-0 p-0">VIB</span>
+        <svg
+          class="w-fit h-8 -ml-2"
+          viewBox="0 0 100 120"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <polygon
+            points="70,10 30,60 55,60 25,110 90,50 65,50"
+            fill="#ffffff"
+          />
+        </svg>
       </button>
     </div>
 
