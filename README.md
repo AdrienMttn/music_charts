@@ -11,6 +11,8 @@
 
 [Fonctionnalités](#-fonctionnalités) • [Technologies](#-technologies) • [Contributeurs](#-contributeurs)
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/0719d6b0-b508-4b42-9046-959ec6ecd8ef/deploy-status)](https://app.netlify.com/projects/tupload/deploys)
+
 </div>
 
 ---
