@@ -156,7 +156,7 @@ function formatTime(time: number): string {
           <div v-if="!isLoading" class="flex items-center gap-4">
             <div class="w-12 h-12 rounded-lg overflow-hidden">
               <img
-                :src="laMusic.getAlbum().getCoverUrl()"
+                :src="laMusic?.getAlbum().getCoverUrl()"
                 alt="Image de la musique"
                 class="w-full h-full object-cover"
               />
@@ -165,13 +165,13 @@ function formatTime(time: number): string {
             <!-- Titre de la musique -->
             <div class="min-w-0">
               <p class="text-white font-semibold truncate">
-                {{ laMusic.getTitle() }}
+                {{ laMusic?.getTitle() }}
               </p>
               <p class="text-gray-400 text-sm">
                 {{ formatTime(currentTime) }} / {{ formatTime(duration) }}
               </p>
               <p class="text-gray-400 text-sm truncate">
-                {{ laMusic.getAlbum().getArtist().getName() }}
+                {{ laMusic?.getAlbum().getArtist().getName() }}
               </p>
             </div>
           </div>
