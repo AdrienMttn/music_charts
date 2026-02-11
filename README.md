@@ -11,7 +11,7 @@
 
 [Fonctionnalités](#-fonctionnalités) • [Technologies](#-technologies) • [Contributeurs](#-contributeurs)
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/0719d6b0-b508-4b42-9046-959ec6ecd8ef/deploy-status)](https://app.netlify.com/projects/tupload/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/6668b000-cd5b-4d63-b2d2-bcd53e05f28e/deploy-status)](https://vibz-music.netlify.app/)
 
 </div>
 
