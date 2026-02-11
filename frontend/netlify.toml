@@ -1,0 +1,5 @@
+[[redirects]] 
+  from = "/api/*" 
+  to = "https://adrikiwi.freeboxos.fr/vibz/:splat" 
+  status = 200 
+  force = true
