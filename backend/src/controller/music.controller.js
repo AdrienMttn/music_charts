@@ -123,11 +123,11 @@ export async function GetAudioUrl(req, res) {
       // Vérifie que l'id youtube est présent
       throw new Error("Missing youtubeId parameter"); // Lance une erreur si l'id youtube est manquant
     }
-    const result = await fetch(
-      `${process.env.INVIDIOUS_URL}/api/v1/videos/${youtubeId}?local=true`, // Requête à l'API Invidious pour récupérer les infos de la vidéo
-    );
-    const data = await result.json(); // Parse la réponse JSON de l'API
-    const audioUrl = `${process.env.INVIDIOUS_URL}/${data.adaptiveFormats[0].url}`; // Récupère l'URL de l'audio depuis les formats adaptatifs
+    // const result = await fetch(
+    //   `${process.env.INVIDIOUS_URL}/api/v1/videos/${youtubeId}?local=true`, // Requête à l'API Invidious pour récupérer les infos de la vidéo
+    // );
+    // const data = await result.json(); // Parse la réponse JSON de l'API
+    const audioUrl = `https://ytmusic.alwaysdata.net/stream/${youtubeId}`; // Récupère l'URL de l'audio depuis les formats adaptatifs
     console.log("Audio URL:", audioUrl); // Affiche l'URL de l'audio dans la console pour vérification
     return res.json({ Url: audioUrl }); // Renvoie l'URL de l'audio au format JSON
   } catch (err) {
